@@ -1,0 +1,22 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Real free slots from the founder's own calendar, already phrased for an email ('Tue 2 Sep, 3:00-3:30 PM'). Read-only \u2014 never creates, moves or holds an event. Used by the composer so a scheduling loop closes with actual times instead of 'let me know what works'.",
+  "icon_url": null,
+  "name": "find_free_slots",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "google_calendar",
+        "resource_type": "connector"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

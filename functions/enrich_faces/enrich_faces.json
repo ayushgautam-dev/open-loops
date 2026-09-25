@@ -1,0 +1,40 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Fill in company logos (each company's own domain via Google favicons) and person avatars (real Slack profile photos where available, else Gravatar) so the app shows faces instead of initials. Keyless, idempotent; stores URLs only.",
+  "icon_url": null,
+  "name": "enrich_faces",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "slack",
+        "resource_type": "connector"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "companies",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "people",
+        "resource_type": "datastore_table"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

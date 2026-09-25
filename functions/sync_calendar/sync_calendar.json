@@ -1,0 +1,29 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Google Calendar into the interaction ledger. Each event becomes a meeting interaction with its attendees and agenda, so the extractor reads calls and emails the same way. Notes and transcripts arrive separately from Granola or Meet.",
+  "icon_url": null,
+  "name": "sync_calendar",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "google_calendar",
+        "resource_type": "connector"
+      },
+      {
+        "permission_ids": [
+          "function.execute"
+        ],
+        "resource_name": "record_interaction",
+        "resource_type": "function"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

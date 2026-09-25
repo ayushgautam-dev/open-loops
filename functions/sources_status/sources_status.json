@@ -1,0 +1,14 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Every source Open Loops can read, whether the org has it installed and whether this user has connected it. Drives the Settings and onboarding connection panels. Unconnected is a normal state \u2014 every source is optional.",
+  "icon_url": null,
+  "name": "sources_status",
+  "permissions": {
+    "grants": []
+  },
+  "type": "API",
+  "visibility": "POD"
+}

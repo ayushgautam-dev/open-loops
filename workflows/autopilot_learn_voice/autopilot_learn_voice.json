@@ -1,0 +1,45 @@
+{
+  "description": "Learn Your Voice \u2014 reads your sent mail and keeps a style guide every draft follows.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "learn",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "autopilot_learn_voice",
+  "nodes": [
+    {
+      "config": {
+        "agent_name": "pod_default",
+        "input_mapping": {
+          "message": {
+            "type": "literal",
+            "value": "Load the open-loops-voice skill and follow it exactly: learn how the person writes from their own sent mail and write /me/voice.md. Never overwrite settings voice_doc if it already has text. Send nothing. Report in one line."
+          }
+        }
+      },
+      "id": "learn",
+      "label": "Learn how you write",
+      "position": null,
+      "type": "AGENT"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "schedule_type": "CRON"
+    },
+    "type": "SCHEDULED"
+  },
+  "visibility": "POD"
+}

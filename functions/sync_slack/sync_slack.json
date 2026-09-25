@@ -1,0 +1,29 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Slack into the interaction ledger, one row per conversation per day. Reads only the channels the app was invited to \u2014 DMs need a user-level Slack connection, which is out of scope. Polled once or twice a day rather than pushed.",
+  "icon_url": null,
+  "name": "sync_slack",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "slack",
+        "resource_type": "connector"
+      },
+      {
+        "permission_ids": [
+          "function.execute"
+        ],
+        "resource_name": "record_interaction",
+        "resource_type": "function"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

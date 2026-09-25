@@ -1,0 +1,22 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Every email ever exchanged with one address, oldest first, with per-message direction, to/cc role and an is_recent flag. Use it to build a person's real history and relationship summary; use fetch_recent_emails for what is currently open. Reports never_replied and inbound_only_streak so cold sales senders can be dropped.",
+  "icon_url": null,
+  "name": "fetch_person_history",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "gmail",
+        "resource_type": "connector"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

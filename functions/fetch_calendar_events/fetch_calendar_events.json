@@ -1,0 +1,22 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Pull recent + upcoming Google Calendar events as a compact digest (title, times, attendees, recurrence, meet link) plus recurring-series groups that are candidate Work projects.",
+  "icon_url": null,
+  "name": "fetch_calendar_events",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "google_calendar",
+        "resource_type": "connector"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

@@ -1,0 +1,29 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Gmail into the interaction ledger. Fetches recent mail (or specific message ids for the webhook path), shapes it into normalised interactions with full bodies, and writes them through record_interaction. Forms no opinion about content \u2014 meaning is the extractor's job.",
+  "icon_url": null,
+  "name": "sync_gmail",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "gmail",
+        "resource_type": "connector"
+      },
+      {
+        "permission_ids": [
+          "function.execute"
+        ],
+        "resource_name": "record_interaction",
+        "resource_type": "function"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

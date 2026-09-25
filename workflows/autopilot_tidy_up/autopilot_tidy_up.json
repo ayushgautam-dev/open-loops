@@ -1,0 +1,74 @@
+{
+  "description": "Tidy Up \u2014 closes what the inbox shows was already handled, retires arrangements a later one replaced, collapses a thread listed twice, and ages out anything untouched for a month. Runs every weekday evening.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "inbox",
+      "target": "tidy"
+    },
+    {
+      "id": "e2",
+      "label": null,
+      "source": "tidy",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "autopilot_tidy_up",
+  "nodes": [
+    {
+      "config": {
+        "function_name": "autoresolve_loops",
+        "input_mapping": {
+          "dry_run": {
+            "type": "literal",
+            "value": false
+          },
+          "max_loops": {
+            "type": "literal",
+            "value": 200
+          }
+        }
+      },
+      "id": "inbox",
+      "label": "Close what was already handled",
+      "position": null,
+      "type": "FUNCTION"
+    },
+    {
+      "config": {
+        "function_name": "tidy_up",
+        "input_mapping": {
+          "age_out_days": {
+            "type": "literal",
+            "value": 28
+          },
+          "dry_run": {
+            "type": "literal",
+            "value": false
+          }
+        }
+      },
+      "id": "tidy",
+      "label": "Retire, collapse and age out",
+      "position": null,
+      "type": "FUNCTION"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "schedule_type": "CRON"
+    },
+    "type": "SCHEDULED"
+  },
+  "visibility": "POD"
+}

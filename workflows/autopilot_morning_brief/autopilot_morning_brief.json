@@ -1,0 +1,45 @@
+{
+  "description": "Morning Brief \u2014 today's meetings, what you owe each attendee, and anything overdue. Composed once and emailed to you alone.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "brief",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "autopilot_morning_brief",
+  "nodes": [
+    {
+      "config": {
+        "agent_name": "pod_default",
+        "input_mapping": {
+          "message": {
+            "type": "literal",
+            "value": "Load the open-loops-brief skill and follow the morning brief section exactly. Compose today's brief, store one row in briefs, then send it with send_brief_email. Ground every line in a real commitment and never invent one. If it has already gone today, say so and stop rather than sending a second copy."
+          }
+        }
+      },
+      "id": "brief",
+      "label": "Compose and send the brief",
+      "position": null,
+      "type": "AGENT"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "schedule_type": "CRON"
+    },
+    "type": "SCHEDULED"
+  },
+  "visibility": "POD"
+}

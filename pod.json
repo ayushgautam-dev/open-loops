@@ -1,0 +1,22 @@
+{
+  "contents": {
+    "with_data": true,
+    "with_files": true
+  },
+  "description": "A chief of staff that reads your mail, calendar and meeting notes, keeps track of what you owe people and what they owe you, and prepares the reply before you ask.",
+  "format_version": 3,
+  "icon_url": null,
+  "name": "open-loops",
+  "variables": {
+    "open_loops_desk_slug": {
+      "default": "open-loops-desk",
+      "description": "Public URL slug for app 'open-loops-desk' (unique platform-wide; a suffix is added on collision)",
+      "type": "app_slug"
+    },
+    "open_loops_slug": {
+      "default": "open-loops",
+      "description": "Public URL slug for app 'open-loops' (unique platform-wide; a suffix is added on collision)",
+      "type": "app_slug"
+    }
+  }
+}

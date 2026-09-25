@@ -1,0 +1,23 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Tells a mail-triggered Loose Ends run to stand down while its owner's first-run import is in progress (settings.backfill_until in the future), so one person's import never pauses mail reading for anyone else.",
+  "icon_url": null,
+  "name": "backfill_guard",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "settings",
+        "resource_type": "datastore_table"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

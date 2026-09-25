@@ -1,0 +1,49 @@
+{
+  "description": "Polls the Slack channels the app was invited to. Slack is the one source where near real time is not worth the noise, so this runs twice a day rather than on a webhook.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "pull",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "slack_poll",
+  "nodes": [
+    {
+      "config": {
+        "function_name": "sync_slack",
+        "input_mapping": {
+          "days": {
+            "type": "literal",
+            "value": 2
+          },
+          "max_conversations": {
+            "type": "literal",
+            "value": 25
+          }
+        }
+      },
+      "id": "pull",
+      "label": "Read invited channels",
+      "position": null,
+      "type": "FUNCTION"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "schedule_type": "CRON"
+    },
+    "type": "SCHEDULED"
+  },
+  "visibility": "POD"
+}

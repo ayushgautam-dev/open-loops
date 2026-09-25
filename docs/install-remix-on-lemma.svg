@@ -1,0 +1,11 @@
+<svg width="222" height="38" viewBox="0 0 222 38" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <title>Install and Remix on Lemma</title>
+  <desc>Vivid orange Lemma button with a cobalt offset shadow, white Lemma mark, and white text.</desc>
+  <rect x="5" y="5" width="217" height="33" rx="8" fill="#2457FF"/>
+  <rect x="0.5" y="0.5" width="216" height="33" rx="7.5" fill="#FF5A1F"/>
+  <rect x="0.5" y="0.5" width="216" height="33" rx="7.5" stroke="#FF8A52"/>
+  <rect x="12" y="19" width="3.5" height="7" rx="1.5" fill="#FFFFFF"/>
+  <rect x="18" y="14" width="3.5" height="12" rx="1.5" fill="#FFFFFF"/>
+  <rect x="24" y="9" width="3.5" height="17" rx="1.5" fill="#FFFFFF"/>
+  <text x="39" y="22" fill="#FFFFFF" font-family="Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif" font-size="13.5" font-weight="700" letter-spacing="-0.15">Install &amp; Remix on Lemma</text>
+</svg>

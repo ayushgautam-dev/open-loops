@@ -1,0 +1,45 @@
+{
+  "description": "Keeps the Feed readable. Groups the open commitments into situations \u2014 one per topic \u2014 and writes the two or three sentences that say where each one stands.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "sit",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "autopilot_situations",
+  "nodes": [
+    {
+      "config": {
+        "agent_name": "pod_default",
+        "input_mapping": {
+          "message": {
+            "type": "literal",
+            "value": "Refresh the Feed's topics and the person's workstreams. Follow your writing rules in /memory/AGENTS.md exactly.\n\nFIRST \u2014 the person's notes. Read `corrections` where applied is not true. Each is the person telling you something you could not see (\"already made the WhatsApp group\", \"discussed on a call, not needed\", \"that summary is wrong\"). Act on each one now: reword or close the commitment it concerns (closed_by='manual', close_reason quoting their words, when they say it is done or not needed), fix the summary or workstream it is about, then set applied=true.\n\nTOPICS (`situations` table)\n1. Read every open row in `loops`, with its person, company and work_project.\n2. Group them. A commitment that belongs to a workstream joins that workstream's topic (anchor='workstream', set work_project_id). Otherwise group by what it is about \u2014 usually one per person (anchor='person', set person_id). Several people on the same thing (one hiring round, one customer) belong in ONE topic.\n3. `title`: the topic in the person's own words \u2014 'Acme', 'Founding designer hire' \u2014 never a category.\n4. `summary`: AT MOST TWO SENTENCES AND 220 CHARACTERS. Lead with what needs the person now, with the real date, amount or name; then the one thing they are waiting on, if any. Read timeline_events and the commitments' provenance so every word is true. Never use: loop, entity, record, evidence, thread, status, pending, action item, reply owed, awaiting reply, workstream, situation.\n5. `urgency` = the most urgent of its commitments; status='active'; last_seen_at=now. Update the existing row for an anchor rather than creating a second. Mark a topic whose commitments are all closed status='resolved'.\n\nWORKSTREAMS (`work_projects` table) \u2014 keep them true, and create the missing ones\n6. kind='account': any company with money or a signature in motion (an invoice, a contract, an LOI or pilot, a paid PoC) or with two or more real two-way conversations in the last three weeks and something still open. A paying customer ALWAYS has one. title = the company name; set company_id, kind='account', the sales track_id, cadence ('Customer', 'Pilot', 'Negotiating'), attendees (their emails). Never create one for a vendor pitching the person, a recruiter, or a cold sender.\n7. kind='meeting' for a recurring calendar series (derive cadence from actual dates, never the title, never from one occurrence); kind='hiring' for a hiring round; kind='project' for a finite delivery with a deadline. Never create two for the same thing \u2014 '[Imp] Daily Catchup' and 'Daily Catchup' are one.\n8. For every workstream: `stands` = at most two sentences / 240 characters of where it stands and what was promised; link each open commitment that belongs to it by setting loops.work_project_id. Archive (archived=true) a workstream with no activity for six weeks and nothing open.\n\nBOARDS (`tracks`, `stages`, `board_cards`) \u2014 keep every pipeline true to how this person actually works\n9. For each track with cards, read the stage names and compare them with what the mail and meeting notes show this person really does. The defaults are only starting points. If the real process has a named step the board lacks (an assignment, a call with the founder, an LOI, a pilot), rename a generic stage to it or add it in order; if a stage has never been used and nothing in the mail suggests it, leave it \u2014 never delete a stage that holds cards. Someone with no visible process keeps the defaults. Keep exactly one positive and one negative ending. Keep each stage's `definition` true to its name: one plain sentence saying what evidence puts someone there (an ending needs a plain statement in a message \u2014 never \"set by a human\"). A stage renamed without its definition updated is wrong.\n10. Place each card by evidence, using the stage names as they are now: an invite with no reply stays at the first stage; \"I'll send the assignment\" is the assignment step; the person saying \"I'll send the offer letter\" is the offer step. Terminal stages need explicit evidence. Write `last_move_reason` as one short plain sentence with the date.\n11. One card per deal: a company that is the end client, paying entity or parent of a deal already on the board does not get its own card \u2014 note it in that card's reason instead.\n\nWrite with `lemma records create/update`. Report in one line: topics written/resolved, workstreams created/updated, boards changed."
+          }
+        }
+      },
+      "id": "sit",
+      "label": "Write the situations",
+      "position": null,
+      "type": "AGENT"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "schedule_type": "CRON"
+    },
+    "type": "SCHEDULED"
+  },
+  "visibility": "POD"
+}

@@ -1,0 +1,29 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Granola meeting notes into the interaction ledger, over Granola's hosted MCP. Deliberately free-tier shaped: uses notes and action items, never the paid transcript. Copies note text into our own store because Granola deletes free-plan notes after 30 days. Promises live here \u2014 the highest-value source in the product.",
+  "icon_url": null,
+  "name": "sync_granola",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "mcp",
+        "resource_type": "connector"
+      },
+      {
+        "permission_ids": [
+          "function.execute"
+        ],
+        "resource_name": "record_interaction",
+        "resource_type": "function"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

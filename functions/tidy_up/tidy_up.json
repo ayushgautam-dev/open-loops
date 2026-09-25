@@ -1,0 +1,50 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Keeps the open list honest without touching the inbox. Retires scheduling obligations that a later arrangement replaced, collapses a thread that is listed both as owed-by-you and waited-on, and ages out anything untouched for a month. Every change records when, why and what replaced it, and every change is reversible. Supports dry_run.",
+  "icon_url": null,
+  "name": "tidy_up",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "activity_events",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "people",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "loops",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "drafts",
+        "resource_type": "datastore_table"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

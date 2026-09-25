@@ -1,0 +1,29 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Turns a document Lem wrote into a Google Doc and shares it (view access, by email) with exactly the people it is being sent to, so the link in the email opens for them. Run only from the person's own Send.",
+  "icon_url": null,
+  "name": "share_document",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "google_docs",
+        "resource_type": "connector"
+      },
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "google_drive",
+        "resource_type": "connector"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

@@ -1,0 +1,22 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Pull the last N days of Gmail and return a compact per-thread digest (participants, direction, dated snippets) for loop extraction.",
+  "icon_url": null,
+  "name": "fetch_recent_emails",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "gmail",
+        "resource_type": "connector"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

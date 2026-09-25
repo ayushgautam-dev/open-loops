@@ -1,0 +1,22 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Reads one attachment from a Gmail message (read-only) so the app can open it beside the conversation.",
+  "icon_url": null,
+  "name": "get_email_attachment",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "gmail",
+        "resource_type": "connector"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

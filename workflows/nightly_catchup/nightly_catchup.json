@@ -1,0 +1,82 @@
+{
+  "description": "The safety net. Webhooks drop events occasionally, so once a night this re-reads the recent window for mail and calendar. Everything dedupes on external_id, so a repeat costs nothing.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "mail",
+      "target": "cal"
+    },
+    {
+      "id": "e2",
+      "label": null,
+      "source": "cal",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "nightly_catchup",
+  "nodes": [
+    {
+      "config": {
+        "function_name": "sync_gmail",
+        "input_mapping": {
+          "batch_size": {
+            "type": "literal",
+            "value": 10
+          },
+          "days": {
+            "type": "literal",
+            "value": 3
+          },
+          "max_messages": {
+            "type": "literal",
+            "value": 60
+          }
+        }
+      },
+      "id": "mail",
+      "label": "Catch up on mail",
+      "position": null,
+      "type": "FUNCTION"
+    },
+    {
+      "config": {
+        "function_name": "sync_calendar",
+        "input_mapping": {
+          "batch_size": {
+            "type": "literal",
+            "value": 10
+          },
+          "future_days": {
+            "type": "literal",
+            "value": 7
+          },
+          "past_days": {
+            "type": "literal",
+            "value": 7
+          }
+        }
+      },
+      "id": "cal",
+      "label": "Catch up on calendar",
+      "position": null,
+      "type": "FUNCTION"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "schedule_type": "CRON"
+    },
+    "type": "SCHEDULED"
+  },
+  "visibility": "POD"
+}

@@ -1,0 +1,24 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Stamps interactions as read: extracted_at, the extractor version that read them, and the one-line summary the agent wrote. The version stamp is what lets an improved extractor be re-run over old history.",
+  "icon_url": null,
+  "name": "mark_extracted",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "interactions",
+        "resource_type": "datastore_table"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

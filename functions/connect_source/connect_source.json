@@ -1,0 +1,14 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Starts connecting one source and returns its authorisation link. The founder completes consent in their own browser on the provider's screen; this never handles a credential.",
+  "icon_url": null,
+  "name": "connect_source",
+  "permissions": {
+    "grants": []
+  },
+  "type": "API",
+  "visibility": "POD"
+}

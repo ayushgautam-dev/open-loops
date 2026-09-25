@@ -1,0 +1,55 @@
+{
+  "description": "A new Gmail message fires this. It pulls that one message into the interaction ledger. Nothing here judges the mail \u2014 landing the row is enough, because the row insert then triggers the extractor.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "pull",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "mail_arrived",
+  "nodes": [
+    {
+      "config": {
+        "function_name": "sync_gmail",
+        "input_mapping": {
+          "batch_size": {
+            "type": "literal",
+            "value": 5
+          },
+          "days": {
+            "type": "literal",
+            "value": 1
+          },
+          "max_messages": {
+            "type": "literal",
+            "value": 5
+          }
+        }
+      },
+      "id": "pull",
+      "label": "Pull the message into the ledger",
+      "position": null,
+      "type": "FUNCTION"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "connector_id": "gmail",
+      "connector_trigger_id": "gmail:composio:gmail_new_gmail_message",
+      "trigger_config": {}
+    },
+    "type": "EVENT"
+  },
+  "visibility": "POD"
+}

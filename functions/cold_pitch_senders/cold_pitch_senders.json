@@ -1,0 +1,31 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Deterministic half of the weekly cold-pitch sweep: finds every sender who has pitched three or more times with no reply ever, excludes the owner's own addresses (worked out from their sent mail), platform automation and anyone with a real relationship on file, and writes a plain digest to /me/autopilot/cold-pitch-sweep/<date>-senders.md. Writes no message and sends nothing.",
+  "icon_url": null,
+  "name": "cold_pitch_senders",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "people",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "interactions",
+        "resource_type": "datastore_table"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

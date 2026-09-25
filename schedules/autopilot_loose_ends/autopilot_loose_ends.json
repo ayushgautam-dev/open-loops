@@ -1,0 +1,19 @@
+{
+  "account_id": null,
+  "agent_name": null,
+  "config": {
+    "operations": [
+      "INSERT"
+    ],
+    "table_name": "interactions"
+  },
+  "connector_trigger_id": null,
+  "filter_instruction": null,
+  "filter_output_schema": null,
+  "instruction": null,
+  "is_active": true,
+  "name": "autopilot_loose_ends",
+  "schedule_type": "DATASTORE",
+  "visibility": "POD",
+  "workflow_name": "autopilot_loose_ends"
+}

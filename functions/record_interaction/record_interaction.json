@@ -1,0 +1,40 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "The ledger writer. Every source lands raw interactions here: a light row in `interactions` plus the raw body as an indexed markdown file under /me. Parses, normalises and dedupes by external_id; forms no opinion about content. One DATASTORE trigger on `interactions` then drives extraction regardless of source.",
+  "icon_url": null,
+  "name": "record_interaction",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "companies",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "people",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "interactions",
+        "resource_type": "datastore_table"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

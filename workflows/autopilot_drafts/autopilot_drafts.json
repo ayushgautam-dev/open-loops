@@ -1,0 +1,45 @@
+{
+  "description": "Ready to send \u2014 writes the reply, nudge or invite for anything waiting on you, so the work is already done when you open the app. Nothing is ever sent.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "write",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "autopilot_drafts",
+  "nodes": [
+    {
+      "config": {
+        "agent_name": "pod_default",
+        "input_mapping": {
+          "message": {
+            "type": "literal",
+            "value": "Load the open-loops-write skill and follow it exactly \u2014 including reading /me/voice.md and settings voice_doc before writing anything.\n\nFind every open commitment on the person's own side (`loops.side='you'`, `status='open'`) that has no pending row in `drafts`, and prepare it. Newest first, stop after eight.\n\nFor each, decide the shape the skill describes:\n- email \u2014 the answer is something said. Fill kind='email', subject, body, to_emails, cc_emails.\n- meeting \u2014 a call was agreed or would settle it. Call find_free_slots and fill kind='meeting' with a `meeting` JSON of 2\u20134 real slots, plus a short covering body.\n- document \u2014 what was promised is a thing (offer letter, JD, proposal, LOI, specs). Write the complete document into `deliverables` (kind='doc', status='pending', loop_id) and an email draft (kind='email') that sends it.\n\nAlways set `note` to one past-tense line saying what you prepared. One pending draft per commitment \u2014 update rather than adding a second. Never send anything. Never invent a fact; mark a genuine unknown with [...] and say so in the note. Report how many you prepared of each shape."
+          }
+        }
+      },
+      "id": "write",
+      "label": "Write what is waiting",
+      "position": null,
+      "type": "AGENT"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "schedule_type": "CRON"
+    },
+    "type": "SCHEDULED"
+  },
+  "visibility": "POD"
+}

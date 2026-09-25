@@ -1,0 +1,32 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Collapses a person's timeline back to the moments worth remembering. Merges rows describing the same event on the same day, and removes pure scheduling logistics when the meeting itself is already recorded. Keeps the fullest wording. Supports dry_run.",
+  "icon_url": null,
+  "name": "tidy_timeline",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "people",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "timeline_events",
+        "resource_type": "datastore_table"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

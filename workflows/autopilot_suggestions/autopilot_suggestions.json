@@ -1,0 +1,45 @@
+{
+  "description": "Suggested for you \u2014 watches for things you do by hand every week and offers to take them over. Every suggestion carries the reason it was made, drawn from your own data.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "suggest",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "autopilot_suggestions",
+  "nodes": [
+    {
+      "config": {
+        "agent_name": "pod_default",
+        "input_mapping": {
+          "message": {
+            "type": "literal",
+            "value": "Look at the last month of `interactions`, `loops`, `work_projects` and `board_cards` and find at most three things this person does repeatedly by hand that could run on its own.\n\nFor each, write a row into `suggestions` with:\n- `proposal`: what it would do, in one plain sentence starting with a verb \u2014 'Every Friday, tell you which deals went quiet this week.'\n- `reason`: why you are suggesting it, drawn from THEIR data and naming the specifics \u2014 'You chased three stalled threads by hand this month.' Never a generic tip.\n- `status`: 'open'\n\nRules: only suggest something you could actually build here as a schedule plus a workflow. Do not suggest anything that already exists as an autopilot \u2014 check first. Do not repeat a suggestion already in the table, whatever its status. If nothing genuinely repeats, write nothing at all; an empty week is a fine answer and a padded one destroys the value of the section."
+          }
+        }
+      },
+      "id": "suggest",
+      "label": "Look for patterns",
+      "position": null,
+      "type": "AGENT"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "schedule_type": "CRON"
+    },
+    "type": "SCHEDULED"
+  },
+  "visibility": "POD"
+}

@@ -1,0 +1,22 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Pull the last N days of Slack DMs, group DMs and channels the user is in, and return a compact per-conversation digest (participants, direction, dated snippets) for loop extraction. Returns connected:false rather than failing when Slack isn't linked yet.",
+  "icon_url": null,
+  "name": "fetch_slack",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "slack",
+        "resource_type": "connector"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

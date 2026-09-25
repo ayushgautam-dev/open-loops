@@ -1,0 +1,22 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Turns a document Lem wrote into a real Google Doc in the person's own Drive and returns its link. Run only from the person's click on a document card.",
+  "icon_url": null,
+  "name": "save_google_doc",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "google_docs",
+        "resource_type": "connector"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

@@ -1,0 +1,22 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Reads one Gmail conversation (read-only) so the app can show the whole thread beside the Feed, oldest first, with quoted history stripped from each message.",
+  "icon_url": null,
+  "name": "get_email_thread",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "gmail",
+        "resource_type": "connector"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

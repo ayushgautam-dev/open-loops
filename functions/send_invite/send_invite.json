@@ -1,0 +1,22 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "Books a meeting on the person's own calendar with a Google Meet link and emails the invite to the guests. Only ever run from the person's own Send invite click on a meeting card. Returns the event and link, or the calendar's refusal.",
+  "icon_url": null,
+  "name": "send_invite",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "connector.use"
+        ],
+        "resource_name": "google_calendar",
+        "resource_type": "connector"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

@@ -1,0 +1,40 @@
+{
+  "files": [
+    {
+      "description": null,
+      "path": "/memory/AGENTS.md",
+      "search_enabled": true,
+      "visibility": "POD"
+    },
+    {
+      "description": "Lem's 'open-loops-brief' skill \u2014 installed to /skills/open-loops-brief/SKILL.md by setup.sh or the app's first run",
+      "path": "/setup/skills/open-loops-brief.md",
+      "search_enabled": false,
+      "visibility": "POD"
+    },
+    {
+      "description": "Lem's 'open-loops-notice' skill \u2014 installed to /skills/open-loops-notice/SKILL.md by setup.sh or the app's first run",
+      "path": "/setup/skills/open-loops-notice.md",
+      "search_enabled": false,
+      "visibility": "POD"
+    },
+    {
+      "description": "Lem's 'open-loops-voice' skill \u2014 installed to /skills/open-loops-voice/SKILL.md by setup.sh or the app's first run",
+      "path": "/setup/skills/open-loops-voice.md",
+      "search_enabled": false,
+      "visibility": "POD"
+    },
+    {
+      "description": "Lem's 'open-loops-work' skill \u2014 installed to /skills/open-loops-work/SKILL.md by setup.sh or the app's first run",
+      "path": "/setup/skills/open-loops-work.md",
+      "search_enabled": false,
+      "visibility": "POD"
+    },
+    {
+      "description": "Lem's 'open-loops-write' skill \u2014 installed to /skills/open-loops-write/SKILL.md by setup.sh or the app's first run",
+      "path": "/setup/skills/open-loops-write.md",
+      "search_enabled": false,
+      "visibility": "POD"
+    }
+  ]
+}

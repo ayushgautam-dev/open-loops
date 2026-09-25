@@ -1,0 +1,59 @@
+{
+  "description": "A calendar event changed. Re-reads the window so meetings, attendees and agreed-but-unbooked calls stay current.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "pull",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "calendar_changed",
+  "nodes": [
+    {
+      "config": {
+        "function_name": "sync_calendar",
+        "input_mapping": {
+          "batch_size": {
+            "type": "literal",
+            "value": 10
+          },
+          "future_days": {
+            "type": "literal",
+            "value": 7
+          },
+          "max_events": {
+            "type": "literal",
+            "value": 40
+          },
+          "past_days": {
+            "type": "literal",
+            "value": 7
+          }
+        }
+      },
+      "id": "pull",
+      "label": "Refresh the calendar window",
+      "position": null,
+      "type": "FUNCTION"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "connector_id": "google_calendar",
+      "connector_trigger_id": "google_calendar:composio:googlecalendar_google_calendar_event_sync_trigger",
+      "trigger_config": {}
+    },
+    "type": "EVENT"
+  },
+  "visibility": "POD"
+}

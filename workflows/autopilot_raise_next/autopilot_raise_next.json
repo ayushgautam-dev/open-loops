@@ -1,0 +1,45 @@
+{
+  "description": "Raise next time \u2014 before each recurring meeting, works out what you should actually say when it starts: what was left unresolved, what was promised and not delivered, and what is new since.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "agenda",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "autopilot_raise_next",
+  "nodes": [
+    {
+      "config": {
+        "agent_name": "pod_default",
+        "input_mapping": {
+          "message": {
+            "type": "literal",
+            "value": "Load the open-loops-brief skill and follow its 'What to raise next time' section exactly.\n\nFor every row in `work_projects` that is not archived and has a cadence (a recurring meeting), work out what the person should actually say when it next starts, and write it into that row's `raise_next` column.\n\nBuild it from three things only:\n- still unresolved: raised in an earlier meeting and never landed\n- promised and not delivered, by either side, with how long it has been\n- new since last time: something that happened the others do not know yet\n\nThree or four lines, each one a thing to say, not a status report. Ground every line in a real interaction or commitment \u2014 read `interactions` for that meeting's series and `timeline_events` for the attendees. If there is genuinely nothing worth raising, write exactly: Nothing worth raising. Also refresh that row's `stands` if it has drifted from the truth. Report how many you wrote."
+          }
+        }
+      },
+      "id": "agenda",
+      "label": "Build the agenda",
+      "position": null,
+      "type": "AGENT"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "schedule_type": "CRON"
+    },
+    "type": "SCHEDULED"
+  },
+  "visibility": "POD"
+}

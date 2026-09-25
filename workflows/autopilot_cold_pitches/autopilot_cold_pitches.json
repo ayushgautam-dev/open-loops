@@ -1,0 +1,66 @@
+{
+  "description": "Cold Pitch Sweep \u2014 every Friday, the senders who have pitched you three or more times without a reply, each with an unsubscribe or a decline already written. Nothing is ever sent.",
+  "edges": [
+    {
+      "id": "e1",
+      "label": null,
+      "source": "sweep",
+      "target": "write"
+    },
+    {
+      "id": "e2",
+      "label": null,
+      "source": "write",
+      "target": "end"
+    }
+  ],
+  "icon_url": null,
+  "mode": "GLOBAL",
+  "name": "autopilot_cold_pitches",
+  "nodes": [
+    {
+      "config": {
+        "function_name": "cold_pitch_senders",
+        "input_mapping": {
+          "min_pitches": {
+            "type": "literal",
+            "value": 3
+          }
+        }
+      },
+      "id": "sweep",
+      "label": "Find the senders",
+      "position": null,
+      "type": "FUNCTION"
+    },
+    {
+      "config": {
+        "agent_name": "pod_default",
+        "input_mapping": {
+          "message": {
+            "type": "literal",
+            "value": "This is the Friday cold-pitch sweep. Nothing here is ever sent \u2014 you write, the person sends.\n\nThe sweep has already run: every sender who has written three or more times with no reply ever is listed, with counts, dates and their recent subjects, in the newest `-senders.md` file under `/me/autopilot/cold-pitch-sweep/` (today's date is in the filename). Read that file first. If it is missing or empty, write the file described below saying plainly that nobody qualified this week, and stop.\n\nThen write `/me/autopilot/cold-pitch-sweep/<today>.md` \u2014 one section per sender from the digest, in the order they appear there:\n1. A one-line header: who they are, how many times they have written, when they last wrote, and how long the silence has been.\n2. One sentence on what they are actually sending (a sales pitch, an event sponsorship pitch, a product notification, a newsletter) \u2014 read their subjects and, where it is ambiguous, their latest interaction in the pod before deciding.\n3. `Unsubscribe:` or `Decline:` \u2014 exactly one line of copy, ready to paste and send. Use `Unsubscribe:` when the address is automated or the mail is a list/newsletter (the digest marks these), `Decline:` when a real person is pitching something. Warm, direct, one or two sentences, no grovelling, no 'circling back'. Sign off with the founder's first name only.\n\nThen a short closing line: these were written, not sent; the person can paste them or ignore the sender.\n\nRules: never invent an address, a link or a fact \u2014 if the unsubscribe route is unclear, say the line to reply with instead. Do not add anyone the digest did not list, and do not open or close any commitment, loop, task or board card from this run. Report the number of senders you wrote for."
+          }
+        }
+      },
+      "id": "write",
+      "label": "Write the unsubscribe or decline",
+      "position": null,
+      "type": "AGENT"
+    },
+    {
+      "config": {},
+      "id": "end",
+      "label": "Done",
+      "position": null,
+      "type": "END"
+    }
+  ],
+  "start": {
+    "config": {
+      "schedule_type": "CRON"
+    },
+    "type": "SCHEDULED"
+  },
+  "visibility": "POD"
+}
