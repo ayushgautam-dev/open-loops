@@ -1,18 +1,53 @@
+<h1 align="center">Open Loops</h1>
+
+<p align="center"><b>A chief of staff for your inbox.</b><br>
+It reads your mail, calendar and meeting notes, keeps track of what you owe people and
+what they owe you — and has the reply written before you ask.</p>
+
 <p align="center">
   <a href="https://lemma.work/import/github/ayushgautam-dev/open-loops"><img alt="Install and Remix on Lemma" src="./docs/install-remix-on-lemma.svg" height="38"></a>
 </p>
 
-# Open Loops
-
-A chief of staff that reads your mail, calendar and meeting notes, and keeps track of
-what is still open — who is waiting on you, what you promised and by when, and what
-other people owe you.
-
-You open it in the morning and the reply you owe is already written, in your voice,
-with real times from your calendar. You read it, change a word, press **Send**. That is
-the whole product: **Lem prepares, you approve.** Nothing ever leaves without your Send.
+<p align="center">
+  <img src="./docs/today.svg" alt="The Today page: a morning greeting, what is on you, two replies Lem has already written, and one topic with its open items. All names are invented." width="100%">
+</p>
 
 ---
+
+## Why it exists
+
+Most of what slips is not hard work. It is the reply you meant to send after the call,
+the deck you said you would share on Friday, the person who is still waiting to hear
+back from you — spread across a hundred threads, and remembered only when someone
+chases.
+
+Open Loops reads where those promises are actually made — your mail, your calendar,
+your meeting notes — and keeps one list of everything still open, in plain sentences:
+
+> **Send Sam the pilot terms** — *you, 2 days*<br>
+> **Waiting on Maya for the signed agreement** — *Maya, 1 week*
+
+And it does not stop at the list. For the replies you owe, **Lem** — the assistant
+inside it — has already written the email, in your voice, with real free times from your
+calendar. You read it, change a word, press **Send**.
+
+**Lem prepares, you approve.** Nothing ever leaves without your Send.
+
+## What a morning looks like
+
+- **Today** — the day's meetings as a ribbon, one line of counts (*4 on you · 3 waiting
+  on others*), and the replies Lem already wrote, as letters waiting for a yes.
+- **Topics** — everything open, grouped the way you think about it: a customer, a hiring
+  round, a project. Two lines on where each stands. Switch to *by person* or *by
+  company* in one click; open any of them as a tab.
+- **The item** — why it is open, quoted from the conversation it came from, the whole
+  email thread, and the draft underneath. **Send**, or **Done · Snooze · Dismiss**.
+- **Morning brief** — one email at 7:30 with the day's meetings and what you owe
+  each person. Nothing else interrupts you.
+- **Pipelines** — hiring and sales as boards, with how long each card has sat in its
+  stage. Stages come from what actually happened in your mail, not a template.
+- **Ask Lem** — "what did I promise on my last call?", "draft a reply to Maya that
+  pushes to Thursday". It works with your permissions only.
 
 ## How it works
 
@@ -21,15 +56,14 @@ the whole product: **Lem prepares, you approve.** Nothing ever leaves without yo
             │
             │  every message lands as a row in `interactions`, as you
             ▼
-   ┌───────────────────────┐   reads each new row (as its owner), keeps only what
-   │  Loose Ends           │   is genuinely unfinished — a promise, a question
-   │  (the one shared      │   asked of you, something you are waiting on — and
-   │   trigger)            │   records who, since when, and the conversation it
-   └──────────┬────────────┘   came from. Cold pitches and automated mail are dropped.
+   ┌───────────────────────┐   reads each new row as its owner and keeps only what
+   │  Loose Ends           │   is genuinely unfinished — a promise, a question asked
+   │  (one shared trigger) │   of you, something you are waiting on — with who, since
+   └──────────┬────────────┘   when, and the conversation it came from
               ▼
-   ┌───────────────────────┐   groups what is open into topics, writes the two lines
-   │  your autopilots      │   that say where each stands, drafts the replies,
-   │  (each person's own)  │   tidies what you already handled, briefs you at 7:30
+   ┌───────────────────────┐   group what is open into topics, write where each
+   │  your autopilots      │   stands, draft the replies, tidy what you already
+   │  (each person's own)  │   handled, brief you each morning
    └──────────┬────────────┘
               ▼
    ┌───────────────────────┐
@@ -37,40 +71,31 @@ the whole product: **Lem prepares, you approve.** Nothing ever leaves without yo
    └───────────────────────┘
 ```
 
-**Lem is one assistant** — the pod's own, which every Lemma pod already has. It runs
-with *your* permissions, so it can only ever see your own rows. Its judgement lives in
-[`files/memory/AGENTS.md`](files/memory/AGENTS.md) and five skills under
-[`files/setup/skills/`](files/setup/skills/); the rules that matter most
-(an invitation is not an offer, silence is not a rejection, never close something on a
-guess) are enforced in code, in the functions, not left to a prompt.
+**Careful by construction.** The mistakes that cost trust are handled in code, not left
+to a prompt: an invitation is not an offer, silence is not a rejection, nothing is closed
+on a guess, and nothing is saved without the conversation it came from — so it can
+close itself when you reply. Cold pitches and automated mail never become commitments.
 
 **Corrections are the settings page.** Every line Lem writes has a quiet *not right?*.
-Say what is wrong in your own words; Lem reads corrections before it writes anything
-again.
+Say what is wrong in your own words, and Lem reads it before it writes anything again.
 
-### Private per person, shared by a team
+## Private per person, ready for a team
 
-One person installs it; everybody else in the organization can be added to the same pod.
+One person installs it; anyone else in the organization can be added to the same pod.
 
 - **Every table is row-level secured.** Each person sees only their own mail,
-  commitments, people and drafts. The one exception is `autopilot_catalog` — the menu
-  of autopilots — which holds no personal data.
-- **Everyone gets their own autopilots.** A schedule runs as whoever created it: their
-  mail, their inbox for the brief, their timezone. The first time each person opens
-  the app it sets up their own copy of every autopilot that starts on. Switching one
-  off pauses only theirs.
+  commitments, people and drafts — nobody else's, including the person who installed it.
+- **Everyone gets their own autopilots.** The first time each person opens the app, it
+  sets up their own copy of every autopilot below, in their own timezone, running as
+  them. Switching one off pauses only theirs.
 
 | On from the start | A switch away |
 |---|---|
-| Keep the Feed readable · Prepared replies · Morning Brief · Raise next time · Tidy Up · Nightly catch-up · Suggestions · Learn your voice | Cold Pitch Sweep · Check Slack · Watch mail (instant) · Watch calendar (instant) |
+| Keep topics readable · Prepared replies · Morning brief · Raise next time · Tidy up · Nightly catch-up · Suggestions · Learn your voice | Cold-pitch sweep · Check Slack · Watch mail instantly · Watch calendar instantly |
 
-Anything you ask Lem to set up for you on top of these — "every Monday, tell me which
-invoices are still unpaid" — is yours alone.
-
-**What ships switched off, and why:** nothing on by default reaches another person.
-The brief goes to your own inbox; drafts wait for your Send. The instant watchers are
-off only because they bind to your own Gmail and Calendar accounts, which have to be
-connected first.
+Nothing that is on by default reaches another person: the brief goes to your own inbox,
+and drafts wait for your Send. Anything you ask Lem to set up on top — *"every Monday,
+tell me which invoices are still unpaid"* — is yours alone.
 
 ## Install and remix on Lemma
 
@@ -78,13 +103,22 @@ connected first.
   <a href="https://lemma.work/import/github/ayushgautam-dev/open-loops"><img alt="Install and Remix on Lemma" src="./docs/install-remix-on-lemma.svg" height="38"></a>
 </p>
 
-The button opens Lemma's import for this repository. When it finishes, open the app:
-its first run connects Gmail (Calendar and Granola are optional), installs Lem's
-skills, reads your last three weeks, and sets up your autopilots. There is no sample
-data — what you see is your own mail from the first screen.
+Press the button, then open the app. Its first run:
 
-To have an agent set it up instead, paste [SETUP-PROMPT.md](SETUP-PROMPT.md) into a
-fresh pod's chat. From a terminal:
+1. connects **Gmail** — Google Calendar and Granola are optional, and each is one sign-in;
+2. asks one question: *what do you spend your time on?*;
+3. reads your last three weeks and shows you what is still open.
+
+There is no sample data. The first screen you see is your own.
+
+**To add your team**, add them to the pod. They open the same app and get their own
+first run — their own accounts, their own rows, their own autopilots.
+
+<details>
+<summary>Set it up with an agent, or from a terminal</summary>
+
+Paste [SETUP-PROMPT.md](SETUP-PROMPT.md) into a fresh pod's chat and the pod's own
+assistant does the rest. Or:
 
 ```bash
 git clone --depth 1 https://github.com/ayushgautam-dev/open-loops && cd open-loops
@@ -92,62 +126,56 @@ LEMMA_POD_ID=<pod> ./setup.sh
 ```
 
 [`setup.sh`](setup.sh) imports everything with its files and the autopilot menu, names
-the pod, checks every function kept its permissions, installs the skills, and ends with
-a note telling whoever ran it what to say next. About three minutes.
+the pod, checks every function kept its permissions, installs Lem's skills, and ends
+with a note telling whoever ran it what to say next. About three minutes.
 
-**Adding your team:** add them to the pod. They open the same app and get their own
-first run — their own accounts, their own rows, their own autopilots.
+</details>
 
-## What is in here
+## Make it yours
 
-| Kind | What |
-|---|---|
-| tables | `interactions` (every message, the ledger everything reads from) · `loops` (commitments) · `situations` (topics) · `people` · `companies` · `drafts` · `deliverables` (documents Lem wrote) · `timeline_events` · `work_projects` (workstreams) · `tracks` / `stages` / `board_cards` (pipelines) · `corrections` · `suggestions` · `tasks` · `settings` · `autopilot_catalog` (the shared menu) and the rest |
-| functions | Deterministic writers: `record_interaction`, `ingest_open_loops`, `autoresolve_loops`, `tidy_up`. Connectors: `sync_gmail`, `sync_calendar`, `sync_granola`, `get_email_thread`, `send_draft`, `send_invite`, `find_free_slots`. `connect_source` installs and connects a source from inside the app — nobody visits an admin console. `backfill_guard` keeps one person's first import from flooding the shared trigger. |
-| workflows | One per autopilot. Most are a single step that wakes Lem with a precise instruction. |
-| schedules | Only `autopilot_loose_ends` — the one trigger shared by the pod. Everyone's other autopilots are created per person, from the menu. |
-| files | `/memory/AGENTS.md` (Lem) and `/setup/skills/*.md` (the skills, installed on first run) |
-| apps | `open-loops-desk` and `open-loops` — two layouts over the same pod. Shipped **built**; the projects are in `desk/` and `app/`. |
+1. [Fork the repository](https://github.com/ayushgautam-dev/open-loops/fork).
+2. Change what Lem is told ([`files/memory/AGENTS.md`](files/memory/AGENTS.md) and the
+   skills beside it), the autopilots, the tables or the app.
+3. Import your fork with `https://lemma.work/import/github/<you>/<your-repo>`.
+4. When it is useful, [show your version here](https://github.com/ayushgautam-dev/open-loops/issues/new?template=show-your-version.yml&title=%5BRemix%5D+).
 
-## Changing it
-
-The apps ship as built output so an import needs no build and nothing configured.
-To change one, edit its project and rebuild:
+The apps ship built so an import needs no build and nothing configured. To change one,
+edit its project and rebuild:
 
 ```bash
 cd desk && npm install && npm run dev     # signed in as whoever the Lemma CLI is
 ./desk/build.sh                           # rewrites apps/open-loops-desk/source/
 ```
 
-`build.sh` unsets every `VITE_LEMMA_*` variable and moves any `.env` file aside first —
-Vite would otherwise bake your pod's id into a public repository — and refuses to write
-output that contains one. [AGENTS.md](AGENTS.md) has the rest: what each part is for,
-and what has broken before.
+`build.sh` clears every `VITE_LEMMA_*` setting and moves `.env` files aside first — Vite
+would otherwise bake your pod's id into the build — and refuses to write output that
+contains one. [AGENTS.md](AGENTS.md) covers what each part is for and what has broken
+before.
 
-**Remix it:** [fork the repository](https://github.com/ayushgautam-dev/open-loops/fork),
-change what you like, and import your fork with
-`https://lemma.work/import/github/<you>/<your-repo>`.
+## What is in here
+
+| | |
+|---|---|
+| **tables** | `interactions` (every message — the ledger everything reads) · `loops` (commitments) · `situations` (topics) · `people` · `companies` · `drafts` · `deliverables` (documents Lem wrote) · `timeline_events` · `work_projects` · `tracks`, `stages`, `board_cards` (pipelines) · `corrections` · `autopilot_catalog` (the shared menu) · … |
+| **functions** | Deterministic writers — `record_interaction`, `ingest_open_loops`, `autoresolve_loops`, `tidy_up`. Connectors — `sync_gmail`, `sync_calendar`, `sync_granola`, `get_email_thread`, `send_draft`, `send_invite`, `find_free_slots`. `connect_source` installs and connects a source from inside the app, so nobody visits an admin console. |
+| **workflows** | One per autopilot; most wake Lem with one precise instruction. |
+| **schedules** | Only `autopilot_loose_ends`, the trigger the pod shares. Everyone's autopilots are created per person, from the menu. |
+| **files** | `/memory/AGENTS.md` — Lem — and `/setup/skills/`, the five skills, installed on first run. |
+| **apps** | `open-loops-desk` and `open-loops` — two layouts over the same pod, shipped built. Their projects are `desk/` and `app/`. |
 
 ## Known limits
 
 - **Gmail is the source that matters.** Without it there is very little to read.
-- **Slack reads only channels the app was invited to.** Direct messages need a
-  per-person Slack account, which is not wired yet.
-- **Instant mail needs the watcher switched on.** Until then new mail is picked up by
+- **Instant mail is a switch.** Until you turn *Watch mail* on, new mail is picked up by
   the nightly catch-up.
+- **Slack reads only channels the app was invited to**; direct messages are not wired yet.
 - **Research on new people needs a key.** Without one, Lem falls back to web search.
 
-## Layout
+## Share
 
-```
-README.md  AGENTS.md  SETUP-PROMPT.md  setup.sh  LICENSE
-pod.json                     metadata + the two app-slug variables
-tables/  functions/  workflows/  schedules/
-files/memory/AGENTS.md       Lem
-files/setup/skills/          the five skills, installed on first run
-apps/*/source/               BUILT apps, uploaded as-is
-app/  desk/                  the React + Vite projects they are built from (+ build.sh)
-docs/                        the install button
-```
+<p>
+  <a href="https://twitter.com/intent/tweet?text=Open%20Loops%3A%20a%20chief%20of%20staff%20that%20reads%20your%20mail%2C%20tracks%20what%20you%20owe%20people%2C%20and%20writes%20the%20reply%20before%20you%20ask.&amp;url=https%3A%2F%2Fgithub.com%2Fayushgautam-dev%2Fopen-loops"><img alt="Share on X" src="https://img.shields.io/badge/Share_on_X-111111?style=for-the-badge&amp;logo=x"></a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fgithub.com%2Fayushgautam-dev%2Fopen-loops"><img alt="Share on LinkedIn" src="https://img.shields.io/badge/Share_on_LinkedIn-0A66C2?style=for-the-badge&amp;logo=linkedin"></a>
+</p>
 
-Built with [Lemma](https://lemma.work). MIT licensed.
+Built with [Lemma](https://lemma.work) · [MIT licensed](LICENSE)

@@ -1,0 +1,38 @@
+name: Show your version
+description: Share a version of Open Loops you changed for your own work.
+title: "[Remix] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Show what you made. One screenshot and a few honest sentences are enough — and please
+        make sure nothing in it shows somebody's real mail.
+  - type: input
+    id: repository
+    attributes:
+      label: Your repository
+      placeholder: https://github.com/you/your-repo
+    validations:
+      required: true
+  - type: input
+    id: import_url
+    attributes:
+      label: Install link
+      description: The Lemma import URL for your repository.
+      placeholder: https://lemma.work/import/github/you/your-repo
+    validations:
+      required: true
+  - type: textarea
+    id: changed
+    attributes:
+      label: What did you change?
+      description: Who uses it, and what is different from the original.
+    validations:
+      required: true
+  - type: textarea
+    id: proof
+    attributes:
+      label: Show it working
+      description: One screenshot, a short recording, or a concrete result.
+    validations:
+      required: true

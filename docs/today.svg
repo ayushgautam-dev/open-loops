@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" width="1200" height="640" role="img" aria-label="Open Loops, the Today page: a morning greeting, what is on you, replies Lem has already written, and one topic with its open items. All names are invented.">
+  <defs>
+    <linearGradient id="lem" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#7B61FF"/><stop offset="1" stop-color="#E86A3A"/>
+    </linearGradient>
+    <radialGradient id="orb" cx="0.35" cy="0.3" r="0.8">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.9"/><stop offset="0.25" stop-color="#C063F0"/><stop offset="0.7" stop-color="#7B61FF"/><stop offset="1" stop-color="#E86A3A"/>
+    </radialGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="#1D1B17" flood-opacity="0.08"/>
+    </filter>
+    <style>
+      .serif { font-family: 'Instrument Serif', Georgia, 'Times New Roman', serif; }
+      .sans { font-family: Inter, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="640" rx="18" fill="#F4F1EA"/>
+  <!-- rail -->
+  <rect width="76" height="640" rx="18" fill="#EDE9DF"/>
+  <rect x="58" width="18" height="640" fill="#EDE9DF"/>
+  <circle cx="38" cy="42" r="11" fill="none" stroke="#1D1B17" stroke-width="3.2" stroke-dasharray="52 70" transform="rotate(-50 38 42)"/>
+  <circle cx="46" cy="34" r="2.8" fill="#D8612A"/>
+  <rect x="17" y="86" width="42" height="32" rx="10" fill="#fff"/>
+  <g fill="#B2AC9D"><rect x="28" y="140" width="20" height="3" rx="1.5"/><rect x="28" y="184" width="20" height="3" rx="1.5"/><rect x="28" y="228" width="20" height="3" rx="1.5"/><rect x="28" y="272" width="20" height="3" rx="1.5"/></g>
+
+  <!-- masthead -->
+  <text x="130" y="72" class="sans" font-size="12" font-weight="600" letter-spacing="1.2" fill="#85806F">THURSDAY 25 SEPTEMBER</text>
+  <text x="128" y="124" class="serif" font-size="48" fill="#1D1B17">Good morning, Priya.</text>
+  <text x="130" y="158" class="sans" font-size="17" fill="#4B473F">Next up, <tspan font-weight="600" fill="#1D1B17">Weekly sync with Acme</tspan> at 10:30.</text>
+  <!-- day ribbon -->
+  <rect x="130" y="184" width="660" height="8" rx="4" fill="#E4DED1"/>
+  <rect x="130" y="184" width="170" height="8" rx="4" fill="#D6CFBF"/>
+  <rect x="318" y="181" width="16" height="14" rx="4" fill="#D8612A"/>
+  <rect x="520" y="181" width="16" height="14" rx="4" fill="#1D1B17"/>
+  <line x1="300" y1="174" x2="300" y2="202" stroke="#D8612A" stroke-width="2"/>
+  <circle cx="300" cy="172" r="4" fill="#D8612A"/>
+
+  <!-- counts -->
+  <text x="130" y="246" class="sans" font-size="16" fill="#4B473F"><tspan class="serif" font-size="26" fill="#D8612A">4</tspan> on you   ·   <tspan class="serif" font-size="26" fill="#7A8593">3</tspan> waiting on others</text>
+  <text x="790" y="246" class="sans" font-size="14" fill="#85806F" text-anchor="end"><tspan class="serif" font-style="italic" fill="#B2AC9D">by</tspan>  Topic  ·  Person  ·  Company</text>
+
+  <!-- ready for you -->
+  <circle cx="137" cy="287" r="7" fill="url(#orb)"/>
+  <text x="152" y="292" class="sans" font-size="12" font-weight="600" letter-spacing="1" fill="#85806F">READY FOR YOU  3</text>
+  <g filter="url(#shadow)">
+    <rect x="130" y="308" width="320" height="150" rx="12" fill="#fff"/>
+    <rect x="470" y="308" width="320" height="150" rx="12" fill="#fff"/>
+  </g>
+  <rect x="130" y="308" width="320" height="4" rx="2" fill="url(#lem)"/>
+  <rect x="470" y="308" width="320" height="4" rx="2" fill="url(#lem)"/>
+  <circle cx="156" cy="338" r="11" fill="#2F8A63"/><text x="156" y="342" class="sans" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">SR</text>
+  <text x="176" y="342" class="sans" font-size="13" font-weight="600" fill="#4B473F">Reply to Sam</text>
+  <text x="150" y="372" class="serif" font-size="21" fill="#1D1B17">Pilot terms for Acme</text>
+  <text x="150" y="396" class="sans" font-size="13" fill="#4B473F">Attached are the pilot terms we agreed</text>
+  <text x="150" y="414" class="sans" font-size="13" fill="#4B473F">on Tuesday — two seats, thirty days…</text>
+  <line x1="150" y1="432" x2="430" y2="432" stroke="#E4DED1" stroke-dasharray="3 3"/>
+  <text x="430" y="449" class="sans" font-size="12" font-weight="600" fill="#D8612A" text-anchor="end">Review →</text>
+  <circle cx="496" cy="338" r="11" fill="#7B5CD6"/><text x="496" y="342" class="sans" font-size="9" font-weight="700" fill="#fff" text-anchor="middle">MO</text>
+  <text x="516" y="342" class="sans" font-size="13" font-weight="600" fill="#4B473F">Times for Maya</text>
+  <text x="490" y="372" class="serif" font-size="21" fill="#1D1B17">Design review, 30 min</text>
+  <g class="sans" font-size="12" fill="#4B473F">
+    <rect x="490" y="386" width="86" height="34" rx="8" fill="#FAE7DB" stroke="#D8612A"/><text x="533" y="408" text-anchor="middle">Tue 2:00</text>
+    <rect x="584" y="386" width="86" height="34" rx="8" fill="#fff" stroke="#E4DED1"/><text x="627" y="408" text-anchor="middle">Wed 11:30</text>
+    <rect x="678" y="386" width="86" height="34" rx="8" fill="#fff" stroke="#E4DED1"/><text x="721" y="408" text-anchor="middle">Thu 4:00</text>
+  </g>
+  <line x1="490" y1="432" x2="770" y2="432" stroke="#E4DED1" stroke-dasharray="3 3"/>
+  <text x="770" y="449" class="sans" font-size="12" font-weight="600" fill="#D8612A" text-anchor="end">Review →</text>
+
+  <!-- a topic -->
+  <g filter="url(#shadow)"><rect x="130" y="480" width="660" height="140" rx="16" fill="#FFFDF9"/></g>
+  <rect x="152" y="500" width="22" height="22" rx="6" fill="#fff" stroke="#E4DED1"/><text x="163" y="516" class="sans" font-size="11" font-weight="700" fill="#3C78B5" text-anchor="middle">A</text>
+  <text x="186" y="519" class="serif" font-size="24" fill="#1D1B17">Acme pilot</text>
+  <text x="768" y="518" class="sans" font-size="13" fill="#85806F" text-anchor="end"><tspan font-weight="700" fill="#D8612A">2</tspan> on you</text>
+  <text x="152" y="548" class="sans" font-size="14" fill="#4B473F">You promised Sam the pilot terms after Tuesday's call; he is waiting on them to</text>
+  <text x="152" y="566" class="sans" font-size="14" fill="#4B473F">get sign-off. Their security questionnaire is due back to them Friday.</text>
+  <circle cx="158" cy="596" r="5" fill="#D8612A"/>
+  <text x="174" y="601" class="sans" font-size="14" fill="#1D1B17">Send Sam the pilot terms</text>
+  <rect x="620" y="587" width="58" height="20" rx="10" fill="#EFEBFF"/><text x="649" y="601" class="sans" font-size="11" font-weight="700" fill="#7B61FF" text-anchor="middle">ready</text>
+  <text x="768" y="601" class="sans" font-size="13" fill="#85806F" text-anchor="end">2d</text>
+
+  <!-- focus hint on the right: Lem bar -->
+  <g filter="url(#shadow)"><rect x="830" y="60" width="340" height="540" rx="16" fill="#FFFDF9"/></g>
+  <text x="854" y="96" class="sans" font-size="11" font-weight="600" letter-spacing="1" fill="#85806F">ITEM</text>
+  <circle cx="860" cy="126" r="5" fill="#D8612A"/>
+  <text x="872" y="130" class="sans" font-size="13" font-weight="600" fill="#4B473F">Your move · 2d</text>
+  <text x="854" y="170" class="serif" font-size="26" fill="#1D1B17">Send Sam the</text>
+  <text x="854" y="200" class="serif" font-size="26" fill="#1D1B17">pilot terms</text>
+  <line x1="856" y1="222" x2="856" y2="276" stroke="#D8612A" stroke-width="3"/>
+  <text x="870" y="238" class="serif" font-style="italic" font-size="16" fill="#4B473F">"I'll send the terms over</text>
+  <text x="870" y="258" class="serif" font-style="italic" font-size="16" fill="#4B473F">once we've agreed seats" —</text>
+  <text x="870" y="278" class="serif" font-style="italic" font-size="16" fill="#4B473F">you, on Tuesday's call</text>
+  <rect x="854" y="302" width="292" height="200" rx="12" fill="#fff" stroke="#E4DED1"/>
+  <text x="872" y="328" class="sans" font-size="10" font-weight="600" letter-spacing="1" fill="#85806F">REPLY</text>
+  <text x="872" y="354" class="sans" font-size="12.5" fill="#4B473F">To  Sam Rivera</text>
+  <text x="872" y="384" class="sans" font-size="13" fill="#1D1B17">Hi Sam,</text>
+  <text x="872" y="408" class="sans" font-size="13" fill="#1D1B17">Attached are the pilot terms —</text>
+  <text x="872" y="428" class="sans" font-size="13" fill="#1D1B17">two seats, thirty days, then we</text>
+  <text x="872" y="448" class="sans" font-size="13" fill="#1D1B17">decide together. Priya</text>
+  <rect x="1058" y="464" width="74" height="28" rx="14" fill="#D8612A"/>
+  <text x="1095" y="483" class="sans" font-size="12.5" font-weight="600" fill="#fff" text-anchor="middle">Send</text>
+  <text x="854" y="540" class="sans" font-size="12.5" fill="#85806F">✓ Done    ◷ Snooze    ✕ Dismiss</text>
+  <text x="854" y="578" class="sans" font-size="11" fill="#B2AC9D">Nothing leaves until you press Send.</text>
+</svg>
