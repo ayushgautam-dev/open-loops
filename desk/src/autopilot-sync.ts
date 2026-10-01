@@ -150,6 +150,21 @@ export async function createMine(e: CatalogEntry, me: string): Promise<Sched> {
   })
 }
 
+/** My timer for loading older history after first run (see backfill.ts). It is not on the
+ *  menu: it exists only while my history is still coming in, and is switched off after. */
+export async function setCatchUpSchedule(on: boolean): Promise<void> {
+  const me = await myId()
+  const mine = (await listSchedules()).find((s) => s.user_id === me && s.workflow_name === CATCH_UP)
+  if (mine) { if (mine.is_active !== on) await schedules().update(mine.id, { is_active: on }); return }
+  if (!on) return
+  await schedules().create({
+    name: `${CATCH_UP}__${tagOf(me)}`, schedule_type: 'TIME', workflow_name: CATCH_UP,
+    // the platform's floor for a timer; while the app is open it nudges the next step itself
+    config: { cron: '*/15 * * * *', timezone: myTimezone() },
+  })
+}
+export const CATCH_UP = 'catch_up'
+
 /** Switch one of my autopilots on or off — creating my copy the first time it goes on. */
 export async function setMine(e: CatalogEntry | null, existing: Sched | undefined, on: boolean): Promise<void> {
   if (existing) { await schedules().update(existing.id, { is_active: on }); return }

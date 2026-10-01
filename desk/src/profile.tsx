@@ -3,6 +3,7 @@ import { X, Check, RefreshCw, Moon, SunMedium } from 'lucide-react'
 import { client, runFn } from './lib'
 import { Avatar, useToast } from './ui'
 import { SourceMark } from './brand'
+import { tm } from './teammate'
 
 /* You: who is signed in, and every app Lem works with — what's connected, what isn't,
    and a few worth adding.
@@ -29,7 +30,7 @@ const SOURCES: App[] = [
 ]
 // where Lem puts finished work
 const OUTPUTS: App[] = [
-  { id: 'google_docs', label: 'Google Docs', why: 'A document Lem wrote opens as a real Google Doc.', via: 'pod' },
+  { id: 'google_docs', label: 'Google Docs', why: 'Documents open as real Google Docs.', via: 'pod' },
   { id: 'google_drive', label: 'Google Drive', why: 'Share a document with just the people it’s for.', via: 'pod' },
 ]
 // worth adding for this kind of work
@@ -158,8 +159,8 @@ export function Profile({ name, email, onClose }: { name: string; email: string;
   const on = (a: App) => status?.[a.id] === 'connected'
   const reading = SOURCES.filter(on).length
   const sections: { title: string; apps: App[] }[] = [
-    { title: 'Lem reads from', apps: SOURCES },
-    { title: 'Lem writes into', apps: OUTPUTS },
+    { title: `${tm()} reads from`, apps: SOURCES },
+    { title: `${tm()} writes into`, apps: OUTPUTS },
     { title: 'Worth adding', apps: SUGGESTED },
   ]
 
@@ -181,7 +182,7 @@ export function Profile({ name, email, onClose }: { name: string; email: string;
           {status === null ? <div className="skel"><div className="skel-row" /><div className="skel-row" style={{ width: '70%' }} /></div> : (
             <>
               <p className="profile-sum">
-                Lem is reading <b>{reading}</b> of {SOURCES.length} sources
+                {tm()} is reading <b>{reading}</b> of {SOURCES.length} sources
                 {SOURCES.some((a) => status[a.id] === 'reauth') && <> · <span className="warn">one needs you to sign in again</span></>}
               </p>
               {sections.map((sec) => {

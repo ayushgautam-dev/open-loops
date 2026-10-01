@@ -2,6 +2,7 @@ import { useState, type ReactNode } from 'react'
 import { Check, Clock, X } from 'lucide-react'
 import { records, type LoopRow } from './lib'
 import { useToast } from './ui'
+import { tm } from './teammate'
 
 /* Closing an item, with the context Lem cannot see.
 
@@ -38,7 +39,7 @@ export async function closeLoop(loop: LoopRow, status: 'closed' | 'dropped' | 'p
 export async function rememberDismissal(loop: LoopRow, why: string) {
   try {
     await records.create('corrections', {
-      about: `a commitment Lem raised with ${loop.person || 'someone'}`,
+      about: `a commitment ${tm()} raised with ${loop.person || 'someone'}`,
       was: loop.obligation,
       correction: why && !/^You said/.test(why)
         ? `Dismissed: ${why}. Don't raise things like this again.`
@@ -108,7 +109,7 @@ export function CloseBar({ loop, onClosed, lead }: {
           <div className="how-note">
             <input
               autoFocus value={note}
-              placeholder={ask === 'done' ? 'Or say what happened — “sent the deck on WhatsApp”' : 'Optional — Lem stops raising things like it'}
+              placeholder={ask === 'done' ? 'Or say what happened — “sent the deck on WhatsApp”' : `Optional. ${tm()} stops raising things like it`}
               onChange={(e) => setNote(e.target.value)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter') submitNote()

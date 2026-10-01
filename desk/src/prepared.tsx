@@ -4,6 +4,7 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import { useSql, records, runFn, rev, lit, isGmailThread } from './lib'
 import { Avatar, Markdown, Orb, useToast } from './ui'
 import { useNav } from './nav'
+import { tm } from './teammate'
 
 /* What Lem prepared, drawn as the thing itself: a letter, an invitation, a document.
    You read it the way the other person will, change what you want, press one button.
@@ -378,7 +379,7 @@ export function Invitation({ draft, onSent }: { draft: DraftRow; onSent?: () => 
         <span><Video size={12} /> {m.location || 'Google Meet'}</span>
       </div>
       {slots.length === 0
-        ? <p className="muted" style={{ margin: '10px 0' }}>No free times found — ask Lem for more.</p>
+        ? <p className="muted" style={{ margin: '10px 0' }}>No free times found. Ask {tm()} for more.</p>
         : (
           <div className="slots" role="radiogroup">
             {slots.map((s, i) => {

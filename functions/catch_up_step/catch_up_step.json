@@ -1,0 +1,53 @@
+{
+  "code": {
+    "$file": "code.py"
+  },
+  "config": null,
+  "description": "One step of loading a person's older history after first run: the next few days of mail (or calendar and meeting notes, once), then says whether a reading pass is needed. Keeps its place in that person's settings.catchup, so it carries on whether or not the app is open.",
+  "icon_url": null,
+  "name": "catch_up_step",
+  "permissions": {
+    "grants": [
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.record.write",
+          "datastore.table.read"
+        ],
+        "resource_name": "settings",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "datastore.record.read",
+          "datastore.table.read"
+        ],
+        "resource_name": "interactions",
+        "resource_type": "datastore_table"
+      },
+      {
+        "permission_ids": [
+          "function.execute"
+        ],
+        "resource_name": "sync_gmail",
+        "resource_type": "function"
+      },
+      {
+        "permission_ids": [
+          "function.execute"
+        ],
+        "resource_name": "sync_calendar",
+        "resource_type": "function"
+      },
+      {
+        "permission_ids": [
+          "function.execute"
+        ],
+        "resource_name": "sync_granola",
+        "resource_type": "function"
+      }
+    ]
+  },
+  "type": "API",
+  "visibility": "POD"
+}

@@ -6,7 +6,7 @@
   "description": "A chief of staff that reads your mail, calendar and meeting notes, keeps track of what you owe people and what they owe you, and prepares the reply before you ask.",
   "format_version": 3,
   "icon_url": null,
-  "name": "open-loops",
+  "name": "Otto",
   "variables": {
     "open_loops_desk_slug": {
       "default": "open-loops-desk",

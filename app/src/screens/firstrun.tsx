@@ -160,7 +160,9 @@ export function FirstRun({ name, onDone }: { name: string; onDone: () => void })
    *  provider's origin, so it cannot talk back to us. */
   async function connect(app: string) {
     setBusy(app); setBusyWord('Setting up…'); setNote('')
-    let win: Window | null = null
+    // opened on the click itself and pointed at the provider once the link is known:
+    // a tab opened after waiting on the pod is what browsers block
+    const win = window.open('', '_blank')
     try {
       /* This installs the connector for the workspace if it is not there yet and
          then hands back a sign-in link — on a pod somebody just cloned, nothing is
@@ -170,15 +172,16 @@ export function FirstRun({ name, onDone }: { name: string; onDone: () => void })
         needs_manual_setup?: boolean; explanation?: string; installed_now?: boolean
       }>('connect_source', { app })
 
-      if (out.already_connected) { await load(); return }
+      if (out.already_connected) { win?.close(); await load(); return }
       const url = out.auth_url || out.authorization_url
       if (!url) {
         setNote(out.explanation
           || 'That source cannot be connected from here yet. You can add it later from Settings.')
+        win?.close()
         return
       }
-      win = window.open(url, '_blank', 'noopener,width=520,height=680')
-      if (!win) { setNote('Your browser blocked the sign-in window — allow pop-ups and try again.'); return }
+      if (win && !win.closed) { win.opener = null; win.location.href = url }
+      else { setNote('Your browser blocked the sign-in tab. Allow pop-ups for this page and press Connect again.'); return }
       setBusyWord('Waiting for sign-in…')
 
       // Up to three minutes of consent, checked every couple of seconds.

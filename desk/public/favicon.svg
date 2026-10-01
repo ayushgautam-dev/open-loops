@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Otto: a small octopus. Round head, two eyes, four visible arms. -->
+  <g fill="#E8663C">
+    <path d="M32 6c-13 0-22 9.500-22 21 0 6 2.400 11 6 14.500V50a4 4 0 0 0 8 0v-4h3v6a4 4 0 0 0 8 0v-6h3v4a4 4 0 0 0 8 0v-8.500c3.600-3.500 6-8.500 6-14.500C54 15.500 45 6 32 6z"/>
+    <path d="M10 40c-2.500 2-5 2-6.500.500M54 40c2.500 2 5 2 6.500.500" fill="none" stroke="#E8663C" stroke-width="5" stroke-linecap="round"/>
+  </g>
+  <circle cx="24" cy="27" r="6" fill="#fff"/><circle cx="40" cy="27" r="6" fill="#fff"/>
+  <circle cx="25.500" cy="28" r="2.800" fill="#1D1B17"/><circle cx="41.500" cy="28" r="2.800" fill="#1D1B17"/>
+</svg>

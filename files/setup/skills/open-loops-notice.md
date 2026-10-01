@@ -353,6 +353,49 @@ in their words, constraints, deadline), `person_email`, `provenance`, `urgency`.
 If the obligation is satisfied by simply replying, it is a loop only — **not** a task.
 Do not manufacture tasks; most obligations are just replies.
 
+## The three calls, exactly
+
+Everything you need to call is on this page. **Do not read any function's source, list the
+pod's functions, or survey its tables before you start** — that costs minutes while the
+person waits on an empty screen. Read a batch, write it, mark it, and only then take the
+next one, so results appear as you go.
+
+```
+lemma functions run pending_interactions --data '{"limit": 20}' --output json
+lemma functions run ingest_open_loops    --data @batch.json     --output json
+lemma functions run mark_extracted       --data @marked.json    --output json
+```
+
+`batch.json` — every list is optional; leave out what you have nothing for:
+
+```json
+{
+  "companies": [{"domain": "acme.com", "name": "Acme", "what": "…", "context": "…", "track_slug": null}],
+  "people":    [{"email": "priya@acme.com", "name": "Priya Shah", "role": "…", "company_domain": "acme.com",
+                 "relationship": "prospect", "context": "…", "how_met": "…", "last_contact_at": "2026-01-12T09:30:00Z",
+                 "track_slugs": []}],
+  "loops":     [{"person_email": "priya@acme.com", "side": "you", "kind": "reply_owed",
+                 "obligation": "Send Priya the pricing sheet", "provenance": "her email of 12 Jan",
+                 "source": "email", "opened_at": "2026-01-12T09:30:00Z", "due_at": null,
+                 "thread_ref": "<the row's thread_ref>", "urgency": 1, "urgency_reason": "…",
+                 "track_slug": null, "draft_subject": null, "draft_body": null}],
+  "tasks":     [{"title": "…", "detail": "…", "person_email": "…", "source": "email",
+                 "opened_at": "…", "due_at": null, "thread_ref": "…", "urgency": 2}],
+  "timeline":  [{"person_email": "priya@acme.com", "company_domain": "acme.com", "type": "email",
+                 "title": "…", "quote": "…", "source": "email", "happened_at": "…", "ref": "<thread_ref>"}]
+}
+```
+
+`relationship` is one of candidate, prospect, investor, vendor, partner, advisor, teammate,
+other. `track_slug` only means something if that tracker already exists; when there are no
+trackers, leave it null and carry on — never create one just to fill the field.
+
+`marked.json`:
+
+```json
+{"version": "v1", "items": [{"id": "<row id>", "summary": "Priya asking for the pricing sheet before Friday"}]}
+```
+
 ## Your process
 
 Everything you read comes from the **interaction ledger** — one row per email, meeting
@@ -443,6 +486,7 @@ them the same way and let `source` and `kind` tell you what you are looking at.
 - You write only through `ingest_open_loops` and `mark_extracted`. You never email,
   never change config.
 - Always mark what you read, even the noise. An unmarked row is read again forever.
+
 
 
 

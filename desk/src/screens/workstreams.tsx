@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { ChevronRight, Repeat, FolderKanban } from 'lucide-react'
+import { ChevronRight, Repeat, FolderKanban, ListChecks, Check } from 'lucide-react'
 import { worthRaising } from '../focus'
-import { useSql, rev, lit, fmtWhen, type LoopRow, type WorkstreamRow } from '../lib'
-import { Faces, Empty, Loading, Markdown } from '../ui'
+import { useSql, rev, lit, fmtWhen, ageLabel, type LoopRow, type WorkstreamRow } from '../lib'
+import { Faces, Empty, Loading, Markdown, Orb } from '../ui'
 import { Correctable } from '../correct'
 import { useNav } from '../nav'
 import { ItemList } from '../items'
 import { Board, boardSql, type BoardRow } from './board'
+import { useOpenTask, type TaskRow } from '../lem'
+import { useTeammate } from '../teammate'
 
 /* The standing list of what you run — projects with a finish line, meetings with a rhythm.
    Each is one card: where it stands, what to raise next time, what's open, and its board
@@ -70,9 +72,48 @@ function Stream({ w, loops, onChange }: { w: WorkstreamRow; loops: LoopRow[]; on
   )
 }
 
+/* Everything you asked for with "Do": what is running, what is ready to look at, and what
+   is finished. Finished work stays listed, so a task never just disappears. */
+const TASK_GROUPS: { status: string; label: string }[] = [
+  { status: 'working', label: 'Running' }, { status: 'drafted', label: 'Ready to look at' }, { status: 'done', label: 'Done' },
+]
+
+function Asked({ tasks }: { tasks: TaskRow[] }) {
+  const openTask = useOpenTask()
+  if (!tasks.length) return <Empty line="Nothing asked yet. Switch the bar below to Do." />
+  return (
+    <div className="stories">
+      {TASK_GROUPS.map((g) => {
+        const own = tasks.filter((t) => t.status === g.status)
+        if (!own.length) return null
+        return (
+          <section key={g.status} className="group-sec">
+            <div className="sec-h">{g.label}</div>
+            <div className="card asked">
+              {own.map((t) => (
+                <button key={t.id} className={`asked-r is-${t.status}`} onClick={() => void openTask(t)}>
+                  {t.status === 'working' ? <Orb live size={12} /> : <Check size={14} strokeWidth={2.6} />}
+                  <span className="asked-t">{t.title}</span>
+                  <span className="muted">{ageLabel(t.updated_at)}</span>
+                  <ChevronRight size={14} />
+                </button>
+              ))}
+            </div>
+          </section>
+        )
+      })}
+    </div>
+  )
+}
+
 export function Workstreams() {
   const { version, bump } = useNav()
-  const [tab, setTab] = useState<'projects' | 'meetings'>('projects')
+  const teammate = useTeammate()
+  const [tab, setTab] = useState<'projects' | 'meetings' | 'asked'>('projects')
+  const tasks = useSql<TaskRow>(rev(
+    `select id, title, status, thread_ref, updated_at from tasks
+     where source='manual' and status in ('working','drafted','done')
+     order by updated_at desc limit 60`, version))
 
   const ws = useSql<WorkstreamRow>(rev(
     `select id, title, coalesce(kind,'') as kind, cadence, stands, since_last, last_met_at, track_id, attendees, raise_next
@@ -105,9 +146,13 @@ export function Workstreams() {
           <button className={tab === 'meetings' ? 'on' : ''} onClick={() => setTab('meetings')}>
             <Repeat size={14} /> Recurring meetings <span>{meetings.length}</span>
           </button>
+          <button className={tab === 'asked' ? 'on' : ''} onClick={() => setTab('asked')}>
+            <ListChecks size={14} /> Asked of {teammate} <span>{tasks.items.length}</span>
+          </button>
         </div>
       </header>
-      {ws.isLoading ? <Loading rows={4} />
+      {tab === 'asked' ? (tasks.isLoading ? <Loading rows={3} /> : <Asked tasks={tasks.items} />)
+        : ws.isLoading ? <Loading rows={4} />
         : list.length === 0
           ? <Empty line={tab === 'meetings' ? 'No recurring meetings yet.' : 'No projects running.'} />
           : <div className="stories">{list.map((w) => (

@@ -12,6 +12,7 @@ import { CloseBar } from './closing'
 import { Conversation } from './thread'
 import { Prepared, Paper, LemNote, draftForLoop, useDocsForLoop, type DraftRow } from './prepared'
 import { useLem } from './lem'
+import { tm } from './teammate'
 
 /* Focus: the panel beside the page — a strip of tabs, one per thing you have open. */
 
@@ -81,7 +82,7 @@ function ItemFocus({ f }: { f: Extract<Focus, { type: 'loop' }> }) {
         loop_id: l.id, to_person_id: l.person_id, kind: 'email', status: 'pending',
         subject: '', body: `Hi ${first},\n\n`,
         to_emails: l.person_email ? [l.person_email] : [],
-        note: `A nudge to ${first}, on the same conversation. Write it, or let Lem.`,
+        note: `A nudge to ${first}, on the same conversation. Write it, or let ${tm()}.`,
       })
       bump()
     } finally { setMaking(false) }
@@ -126,7 +127,7 @@ function ItemFocus({ f }: { f: Extract<Focus, { type: 'loop' }> }) {
 
         {hasWork ? (
           <div className="prepared">
-            <div className="prepared-h"><Orb size={14} /> Lem prepared</div>
+            <div className="prepared-h"><Orb size={14} /> {tm()} prepared</div>
             {draft && <LemNote text={draft.note} />}
             {draft && <Prepared draft={draft} docs={docs.items} onSent={leave} />}
             {docs.items.map((d) => <Paper key={d.id} doc={d} />)}
@@ -136,11 +137,11 @@ function ItemFocus({ f }: { f: Extract<Focus, { type: 'loop' }> }) {
             <Orb size={22} />
             <div>
               <b>{l.side === 'you' ? 'Nothing prepared yet.' : `Want to nudge ${first}?`}</b>
-              <span>{l.side === 'you' ? 'Lem can write it in your voice — you still press send.' : 'A short follow-up on the same conversation.'}</span>
+              <span>{l.side === 'you' ? `${tm()} can write it in your voice. You still press send.` : 'A short follow-up on the same conversation.'}</span>
             </div>
             {l.side === 'you'
-              ? <button className="btn lem" onClick={lemWrite}><Sparkles size={13} /> Prepare it</button>
-              : <button className="btn lem" disabled={making} onClick={() => void startNudge()}>Nudge {first}</button>}
+              ? <button className="btn spark" onClick={lemWrite}><Sparkles size={13} /> Prepare it</button>
+              : <button className="btn spark" disabled={making} onClick={() => void startNudge()}>Nudge {first}</button>}
           </div>
         )}
       </div>
@@ -150,7 +151,7 @@ function ItemFocus({ f }: { f: Extract<Focus, { type: 'loop' }> }) {
           <>
             {hasWork && (
               <button className="btn ghost sm" onClick={lemWrite}>
-                <Sparkles size={13} /> {l.side === 'them' && draft ? 'Let Lem write it' : 'Redo with Lem'}
+                <Sparkles size={13} /> {l.side === 'them' && draft ? `Let ${tm()} write it` : `Redo with ${tm()}`}
               </button>
             )}
             <button className="btn ghost sm" onClick={() => lem.show({ key: `loop:${l.id}`, title: l.obligation, about: `the commitment "${l.obligation}" (loop_id ${l.id})` })}>
@@ -303,7 +304,7 @@ function PersonFocus({ f }: { f: Extract<Focus, { type: 'person' }> }) {
         <button className="btn line sm" onClick={() => lem.show({
           key: `person:${id}`, title: p?.name ?? 'Person',
           about: p ? `${p.name}${p.company ? ` at ${p.company}` : ''} (person_id ${id})` : `person_id ${id}`,
-        })}><MessageCircle size={13} /> Ask Lem</button>
+        })}><MessageCircle size={13} /> Ask {tm()}</button>
       </div>
       <div className="tabs">
         {(['open', 'story', 'docs', 'about'] as PTab[]).map((t) => (
@@ -326,7 +327,7 @@ function PersonFocus({ f }: { f: Extract<Focus, { type: 'person' }> }) {
               </button>))}</div>)}
         {view === 'about' && (p?.research || p?.context
           ? <div className="prose"><Markdown text={p.research || p.context || ''} /></div>
-          : <Empty line="Lem hasn’t written them up yet." />)}
+          : <Empty line={`${tm()} hasn’t written them up yet.`} />)}
       </div>
     </div>
   )
@@ -363,7 +364,7 @@ function CompanyFocus({ f }: { f: Extract<Focus, { type: 'company' }> }) {
         </div>
         <button className="btn line sm" onClick={() => lem.show({
           key: `company:${f.id}`, title: `About ${c.name}`, about: `${c.name} (company_id ${f.id})`,
-        })}><MessageCircle size={13} /> Ask Lem</button>
+        })}><MessageCircle size={13} /> Ask {tm()}</button>
       </div>
       {stands && <div className="stands"><div className="eyebrow">Where it stands</div><p>{stands}</p></div>}
       {worthRaising(ws?.raise_next) && (
@@ -428,7 +429,7 @@ function WorkstreamFocus({ f }: { f: Extract<Focus, { type: 'workstream' }> }) {
         </div>
         <button className="btn line sm" onClick={() => lem.show({
           key: `workstream:${w.id}`, title: w.title, about: `the workstream "${w.title}" (work_project_id ${w.id})`,
-        })}><MessageCircle size={13} /> Ask Lem</button>
+        })}><MessageCircle size={13} /> Ask {tm()}</button>
       </div>
       {w.stands && <div className="stands"><div className="eyebrow">Where it stands</div><p>{w.stands}</p></div>}
       {worthRaising(w.raise_next) && (

@@ -3,6 +3,7 @@ import { Search } from 'lucide-react'
 import { useSql, rev, fmtDate } from '../lib'
 import { Empty, Loading } from '../ui'
 import { useNav } from '../nav'
+import { tm } from '../teammate'
 
 /* Everything Lem wrote, shelved where it belongs: under the workstream, company or person
    it came out of, and only then by kind. Each document is a small page you can pick up. */
@@ -70,11 +71,11 @@ export function Docs() {
       </header>
       {rows.items.length > 6 && (
         <div className="toolbar">
-          <label className="search"><Search size={14} /><input placeholder="Search what Lem wrote…" value={q} onChange={(e) => setQ(e.target.value)} /></label>
+          <label className="search"><Search size={14} /><input placeholder={`Search what ${tm()} wrote…`} value={q} onChange={(e) => setQ(e.target.value)} /></label>
         </div>
       )}
       {rows.isLoading ? <Loading rows={4} />
-        : rows.items.length === 0 ? <Empty line="Lem hasn’t written anything yet." />
+        : rows.items.length === 0 ? <Empty line={`${tm()} hasn’t written anything yet.`} />
           : shelves.length === 0 ? <Empty line="Nothing matches that." />
             : shelves.map(([name, docs]) => (
               <section key={name} className="shelf-sec">

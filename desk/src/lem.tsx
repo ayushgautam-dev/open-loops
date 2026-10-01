@@ -3,11 +3,12 @@ import {
   type ReactNode,
 } from 'react'
 import { useConversationMessages } from 'lemma-sdk/react'
-import { ArrowUp, Square, ChevronDown, Plus, X, Minus, History } from 'lucide-react'
+import { ArrowUp, Square, ChevronDown, Plus, X, Minus, History, Check } from 'lucide-react'
 import { client, sql, lit, records, useSql, rev, ageLabel } from './lib'
 import { Markdown, Orb } from './ui'
 import { WorkChip } from './prepared'
 import { useNav, type Focus } from './nav'
+import { tm } from './teammate'
 
 /* Lem is part of the room, not a tab.
 
@@ -30,7 +31,7 @@ export interface ChatScope {
 export const HOME: ChatScope = {
   key: 'home',
   about: 'the whole workspace — their people, commitments and workstreams',
-  title: 'Lem',
+  title: '',
 }
 
 interface LemApi {
@@ -49,12 +50,14 @@ type Seed = { text: string; n: number } | null
 
 /** "Do" is a piece of work, so it gets a row in `tasks` — what the pills read, and how the
  *  work is findable tomorrow. Lem closes the row when it finishes. Same write as before. */
-async function asTask(text: string): Promise<string> {
+async function asTask(text: string, scopeKey: string): Promise<string> {
   let seed = `Please do this: ${text}`
   try {
     const created = await records.create('tasks', {
       title: text.slice(0, 140), detail: text, status: 'working', source: 'manual',
       urgency: 2, opened_at: new Date().toISOString(),
+      // which conversation the work is happening in, so the task can be opened again later
+      thread_ref: `chat:${scopeKey}`,
     }) as { id?: string }
     if (created?.id) {
       seed = `Please do this: ${text}\n\n`
@@ -131,18 +134,39 @@ function useFocusContext() {
 
 /* ---------------- the dock ---------------- */
 
+export type TaskRow = { id: string; title: string; status: string; thread_ref?: string | null; updated_at?: string | null }
+
+/** Open the conversation a piece of asked-for work is happening in. */
+export function useOpenTask() {
+  const { show } = useLem()
+  return useCallback(async (t: TaskRow) => {
+    const key = (t.thread_ref ?? '').startsWith('chat:') ? t.thread_ref!.slice(5) : `task:${t.id}`
+    let title = t.title
+    try {
+      const rows = await sql<{ title: string }>(`select title from chat_threads where scope_key=${lit(key)} limit 1`)
+      title = rows[0]?.title || title
+    } catch { /* the task's own title will do */ }
+    show(key.startsWith('task:') ? { key, title, about: `a piece of work they asked for: "${t.title}"` } : scopeFor({ scope_key: key, title }))
+  }, [show])
+}
+
+/** What is running, and what finished in the last day: each one opens its conversation. */
 function Tasks() {
   const { version } = useNav()
-  const q = useSql<{ id: string; title: string; status: string }>(rev(
-    `select id, title, status from tasks where status in ('working','queued')
-     order by created_at desc limit 3`, version))
+  const openTask = useOpenTask()
+  const q = useSql<TaskRow>(rev(
+    `select id, title, status, thread_ref, updated_at from tasks
+     where source='manual' and (status='working'
+        or (status in ('drafted','done') and updated_at > now() - interval '1 day'))
+     order by (status='working') desc, updated_at desc limit 3`, version))
   if (!q.items.length) return null
   return (
     <div className="taskpills">
       {q.items.map((t) => (
-        <span key={t.id} className="taskpill" title={t.title}>
-          <Orb live size={10} /> <span>{t.title}</span>
-        </span>
+        <button key={t.id} className={`taskpill${t.status === 'working' ? '' : ' is-done'}`}
+          title={t.status === 'working' ? `Working on: ${t.title}` : `Done: ${t.title}`} onClick={() => void openTask(t)}>
+          {t.status === 'working' ? <Orb live size={10} /> : <Check size={12} strokeWidth={2.8} />} <span>{t.title}</span>
+        </button>
       ))}
     </div>
   )
@@ -191,7 +215,10 @@ export function LemDock() {
     if (!v) return
     setText('')
     if (inputRef.current) inputRef.current.style.height = 'auto'
-    ask(mode === 'do' ? await asTask(v) : v)
+    if (mode !== 'do') { ask(v); return }
+    // each piece of work gets a conversation of its own, so it can be found and reopened
+    const key = `task:${Date.now()}`
+    ask(await asTask(v, key), { key, title: v.slice(0, 60), about: `a piece of work they asked for: "${v.slice(0, 200)}"` })
   }
 
   const threads = useSql<{ scope_key: string; title: string; last_used_at: string }>(rev(listOpen
@@ -209,7 +236,7 @@ export function LemDock() {
     ...scope,
     about: useCtx ? `${baseAbout}. Right now they have ${ctx!.what} open in their workspace — assume questions are about it unless they say otherwise.` : baseAbout,
   }
-  const title = (scope?.title === 'Work this loop' ? 'A commitment' : scope?.title) || 'Lem'
+  const title = (scope?.title === 'Work this loop' ? 'A commitment' : scope?.title) || tm()
 
   return (
     <div className={`lem${isOpen ? ' open' : ''}`}>
@@ -249,7 +276,7 @@ export function LemDock() {
         <div className="lem-chatwrap" hidden={!isOpen || listOpen}>
           {useCtx && (
             <div className="ctx">
-              <span className="ctx-chip" title="Lem reads this as the context for your question">
+              <span className="ctx-chip" title={`${tm()} reads this as the context for your question`}>
                 <span className="ctx-k">About</span>
                 {ctx!.label.length > 52 ? `${ctx!.label.slice(0, 52)}…` : ctx!.label}
                 <button aria-label="Remove context" onClick={() => setDropped(ctx!.key)}><X size={11} /></button>
@@ -261,10 +288,10 @@ export function LemDock() {
       )}
       {!isOpen && (
         <div className="bar">
-          <button className="bar-orb" title="Open Lem (⌘J)" onClick={() => setOpen(true)}><Orb live={running} size={22} /></button>
+          <button className="bar-orb" title={`Open ${tm()} (⌘J)`} onClick={() => setOpen(true)}><Orb live={running} size={22} /></button>
           <textarea
             ref={inputRef} rows={1} value={text}
-            placeholder={running ? 'Lem is working — ask something else, or open it to watch' : mode === 'ask' ? 'Ask Lem anything…' : 'Tell Lem what to do…'}
+            placeholder={running ? `${tm()} is working. Ask something else, or open it to watch` : mode === 'ask' ? `Ask ${tm()} anything…` : `Tell ${tm()} what to do…`}
             onChange={(e) => {
               setText(e.target.value)
               e.target.style.height = 'auto'
@@ -289,7 +316,7 @@ function scopeFor(t: { scope_key: string; title: string }): ChatScope {
   if (k.startsWith('company:')) return { key: k, title: t.title, about: `${t.title.replace(/^About /, '')} (company_id ${k.slice(8)})` }
   if (k.startsWith('workstream:')) return { key: k, title: t.title, about: `the workstream "${t.title}" (work_project_id ${k.slice(11)})` }
   if (k.startsWith('loop:')) return { key: k, title: t.title, about: `the commitment "${t.title}" (loop_id ${k.slice(5)})` }
-  return { ...HOME, key: k, title: t.title || 'Lem' }
+  return { ...HOME, key: k, title: t.title || '' }
 }
 
 /* ---------------- the conversation ---------------- */
@@ -411,7 +438,7 @@ function Chat({ scope, seed, onRunning, active }: {
   useEffect(() => { if (!booting && active) inputRef.current?.focus() }, [booting, active, scope.key])
 
   const instructions = useMemo(
-    () => `You are talking to the person inside Open Loops.\nCONTEXT: ${scope.about}\n`
+    () => `You are ${tm()}, talking to the person inside their desk app, which shows cards.\nCONTEXT: ${scope.about}\n`
         + `Answer in one or two sentences unless they ask for more; at most four short bullets. `
         + `Never mention workflows, schedules, functions, tables or ids. `
         + `When you prepare an email, meeting or document, end with its [[draft:id]] or [[doc:id]] marker — never paste it.`,
@@ -424,6 +451,25 @@ function Chat({ scope, seed, onRunning, active }: {
   })
   const running = thread.isStreaming || thread.isRunning
   useEffect(() => { onRunning(running) }, [running, onRunning])
+
+  /* A task must not spin for ever because nobody closed its row. When the run in this
+     conversation ends, anything still marked as running here becomes "ready to look at"
+     (the teammate marks it done itself when it knows the work is finished). */
+  const { bump } = useNav()
+  const wasRunning = useRef(false)
+  useEffect(() => {
+    if (running) { wasRunning.current = true; return }
+    if (!wasRunning.current) return
+    wasRunning.current = false
+    void (async () => {
+      try {
+        const rows = await sql<{ id: string }>(
+          `select id from tasks where status='working' and thread_ref=${lit(`chat:${scope.key}`)}`)
+        for (const r of rows) await records.update('tasks', r.id, { status: 'drafted' })
+      } catch { /* the pill clears on the next run instead */ }
+      bump()
+    })()
+  }, [running, scope.key])
 
   const seededRef = useRef<number | null>(null)
   useEffect(() => {
@@ -458,7 +504,7 @@ function Chat({ scope, seed, onRunning, active }: {
     if (!text || running) return
     setDraft('')
     if (inputRef.current) inputRef.current.style.height = 'auto'
-    const msg = mode === 'do' ? await asTask(text) : text
+    const msg = mode === 'do' ? await asTask(text, scope.key) : text
     try {
       const id = await ensureConversation(msg)
       await thread.sendMessage(msg, { conversationId: id })
@@ -499,12 +545,12 @@ function Chat({ scope, seed, onRunning, active }: {
           )
         })}
         {running && turns.length === 0 && <div className="said lem-said"><div className="step"><Orb live size={14} /> Working on it…</div></div>}
-        {thread.error && !running && <div className="chat-err">Lem stopped before finishing. Send it again, or ask it differently.</div>}
+        {thread.error && !running && <div className="chat-err">{tm()} stopped before finishing. Send it again, or ask it differently.</div>}
       </div>
       <div className="composer">
         <textarea
           ref={inputRef} value={draft} rows={1}
-          placeholder={running ? 'Lem is working — you can collapse this, it keeps going' : 'Reply to Lem…'}
+          placeholder={running ? `${tm()} is working. You can collapse this, it keeps going` : `Reply to ${tm()}…`}
           onChange={(e) => {
             setDraft(e.target.value)
             e.target.style.height = 'auto'

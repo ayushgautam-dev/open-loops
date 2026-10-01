@@ -16,7 +16,7 @@ Three things it must not discover the hard way, and the note says so:
 - **Reading mail is the person's step, not the agent's.** The app's first run connects
   *their* account and reads *their* mail as them, into rows only they can see. An
   agent that connects an account on somebody's behalf reads the wrong inbox.
-- **Never send.** Lem writes drafts. Only the person's own Send, in the app, sends.
+- **Never send.** Otto writes drafts. Only the person's own Send, in the app, sends.
 - **No browser, no npm, no widget.** The app is already built and puts a Lemma sign-in
   in front of every visitor; an agent has no session to get past it. Verification is
   reading the pod back — `lemma pods describe`, `lemma schedules list`,

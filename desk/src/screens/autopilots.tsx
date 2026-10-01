@@ -5,8 +5,7 @@ import {
 } from 'lucide-react'
 import {
   ensureMyAutopilots, loadCatalog, listSchedules, myId, myCopy, setMine, localCron, myTimezone,
-  type CatalogEntry, type Sched as MySched,
-} from '../autopilot-sync'
+  type CatalogEntry, type Sched as MySched, CATCH_UP } from '../autopilot-sync'
 import { Empty, Loading, Orb, useToast } from '../ui'
 import { useLem } from '../lem'
 
@@ -76,7 +75,7 @@ const LABELS: Record<string, Meta> = {
   mail_arrived: { name: 'Watch mail', what: 'Picks up new mail the moment it lands.', icon: Mail, tint: 'grey' },
   calendar_changed: { name: 'Watch calendar', what: 'Notices when something on your calendar changes.', icon: CalendarClock, tint: 'grey' },
   nightly_catchup: { name: 'Nightly catch-up', what: 'Re-reads the last few days in case a webhook was missed.', icon: MoonStar, tint: 'grey' },
-  slack_poll: { name: 'Check Slack', what: 'Reads the channels Lem was invited to, twice a day.', icon: MessageSquare, tint: 'grey' },
+  slack_poll: { name: 'Check Slack', what: 'Reads the channels it was invited to, twice a day.', icon: MessageSquare, tint: 'grey' },
 }
 
 const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
@@ -190,7 +189,7 @@ export function Autopilots() {
         }
       })
       const covered = new Set(fromMenu.map((r) => r.copy?.id).filter(Boolean))
-      const own: Sched[] = mine.filter((s) => !covered.has(s.id)).map((s) => ({ ...s, entry: null, copy: s }))
+      const own: Sched[] = mine.filter((s) => !covered.has(s.id) && s.workflow_name !== CATCH_UP).map((s) => ({ ...s, entry: null, copy: s }))
       setRows([...fromMenu, ...own])
     } catch { setRows([]) }
   }

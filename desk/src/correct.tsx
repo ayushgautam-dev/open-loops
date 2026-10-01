@@ -1,6 +1,7 @@
 import { useLayoutEffect, useRef, useState } from 'react'
 import { records } from './lib'
 import { useToast } from './ui'
+import { tm } from './teammate'
 
 /* Corrections are how this product is configured: say what's wrong in your own words,
    and Lem reads it before writing anything again. Same `corrections` write as before. */
@@ -32,7 +33,7 @@ export function Correctable({ text, about, kind, subjectId, lines = 2 }: {
       subject_kind: kind, subject_id: subjectId ?? null, applied: false,
     })
     setSent(true); setOpen(false); setNote('')
-    toast('Noted — Lem won’t write it that way again')
+    toast(`Noted. ${tm()} won’t write it that way again`)
   }
 
   return (
@@ -52,7 +53,7 @@ export function Correctable({ text, about, kind, subjectId, lines = 2 }: {
         <div className="fixit" onClick={(e) => e.stopPropagation()}>
           <textarea
             autoFocus rows={2} value={note}
-            placeholder="What’s wrong, or what should Lem know? — “already made the group on WhatsApp”"
+            placeholder={`What’s wrong, or what should ${tm()} know? “already made the group on WhatsApp”`}
             onChange={(e) => setNote(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); void save() }
@@ -60,7 +61,7 @@ export function Correctable({ text, about, kind, subjectId, lines = 2 }: {
             }}
           />
           <div className="row-gap">
-            <button className="btn ink sm" onClick={() => void save()}>Tell Lem</button>
+            <button className="btn ink sm" onClick={() => void save()}>Tell {tm()}</button>
             <button className="btn ghost sm" onClick={() => setOpen(false)}>Cancel</button>
           </div>
         </div>

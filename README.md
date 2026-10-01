@@ -9,7 +9,7 @@ what they owe you — and has the reply written before you ask.</p>
 </p>
 
 <p align="center">
-  <img src="./docs/today.svg" alt="The Today page: a morning greeting, what is on you, two replies Lem has already written, and one topic with its open items. All names are invented." width="100%">
+  <img src="./docs/today.svg" alt="The Today page: a morning greeting, what is on you, two replies Otto has already written, and one topic with its open items. All names are invented." width="100%">
 </p>
 
 ---
@@ -27,16 +27,16 @@ your meeting notes — and keeps one list of everything still open, in plain sen
 > **Send Sam the pilot terms** — *you, 2 days*<br>
 > **Waiting on Maya for the signed agreement** — *Maya, 1 week*
 
-And it does not stop at the list. For the replies you owe, **Lem** — the assistant
+And it does not stop at the list. For the replies you owe, **Otto** — the assistant
 inside it — has already written the email, in your voice, with real free times from your
 calendar. You read it, change a word, press **Send**.
 
-**Lem prepares, you approve.** Nothing ever leaves without your Send.
+**Otto prepares, you approve.** Nothing ever leaves without your Send.
 
 ## What a morning looks like
 
 - **Today** — the day's meetings as a ribbon, one line of counts (*4 on you · 3 waiting
-  on others*), and the replies Lem already wrote, as letters waiting for a yes.
+  on others*), and the replies Otto already wrote, as letters waiting for a yes.
 - **Topics** — everything open, grouped the way you think about it: a customer, a hiring
   round, a project. Two lines on where each stands. Switch to *by person* or *by
   company* in one click; open any of them as a tab.
@@ -46,7 +46,7 @@ calendar. You read it, change a word, press **Send**.
   each person. Nothing else interrupts you.
 - **Pipelines** — hiring and sales as boards, with how long each card has sat in its
   stage. Stages come from what actually happened in your mail, not a template.
-- **Ask Lem** — "what did I promise on my last call?", "draft a reply to Maya that
+- **Ask Otto** — "what did I promise on my last call?", "draft a reply to Maya that
   pushes to Thursday". It works with your permissions only.
 
 ## How it works
@@ -76,8 +76,8 @@ to a prompt: an invitation is not an offer, silence is not a rejection, nothing 
 on a guess, and nothing is saved without the conversation it came from — so it can
 close itself when you reply. Cold pitches and automated mail never become commitments.
 
-**Corrections are the settings page.** Every line Lem writes has a quiet *not right?*.
-Say what is wrong in your own words, and Lem reads it before it writes anything again.
+**Corrections are the settings page.** Every line Otto writes has a quiet *not right?*.
+Say what is wrong in your own words, and Otto reads it before it writes anything again.
 
 ## Private per person, ready for a team
 
@@ -94,7 +94,7 @@ One person installs it; anyone else in the organization can be added to the same
 | Keep topics readable · Prepared replies · Morning brief · Raise next time · Tidy up · Nightly catch-up · Suggestions · Learn your voice | Cold-pitch sweep · Check Slack · Watch mail instantly · Watch calendar instantly |
 
 Nothing that is on by default reaches another person: the brief goes to your own inbox,
-and drafts wait for your Send. Anything you ask Lem to set up on top — *"every Monday,
+and drafts wait for your Send. Anything you ask Otto to set up on top — *"every Monday,
 tell me which invoices are still unpaid"* — is yours alone.
 
 ## Install and remix on Lemma
@@ -126,7 +126,7 @@ LEMMA_POD_ID=<pod> ./setup.sh
 ```
 
 [`setup.sh`](setup.sh) imports everything with its files and the autopilot menu, names
-the pod, checks every function kept its permissions, installs Lem's skills, and ends
+the pod, checks every function kept its permissions, installs Otto's skills, and ends
 with a note telling whoever ran it what to say next. About three minutes.
 
 </details>
@@ -134,7 +134,7 @@ with a note telling whoever ran it what to say next. About three minutes.
 ## Make it yours
 
 1. [Fork the repository](https://github.com/ayushgautam-dev/open-loops/fork).
-2. Change what Lem is told ([`files/memory/AGENTS.md`](files/memory/AGENTS.md) and the
+2. Change what Otto is told ([`files/memory/AGENTS.md`](files/memory/AGENTS.md) and the
    skills beside it), the autopilots, the tables or the app.
 3. Import your fork with `https://lemma.work/import/github/<you>/<your-repo>`.
 4. When it is useful, [show your version here](https://github.com/ayushgautam-dev/open-loops/issues/new?template=show-your-version.yml&title=%5BRemix%5D+).
@@ -156,11 +156,11 @@ before.
 
 | | |
 |---|---|
-| **tables** | `interactions` (every message — the ledger everything reads) · `loops` (commitments) · `situations` (topics) · `people` · `companies` · `drafts` · `deliverables` (documents Lem wrote) · `timeline_events` · `work_projects` · `tracks`, `stages`, `board_cards` (pipelines) · `corrections` · `autopilot_catalog` (the shared menu) · … |
+| **tables** | `interactions` (every message — the ledger everything reads) · `loops` (commitments) · `situations` (topics) · `people` · `companies` · `drafts` · `deliverables` (documents Otto wrote) · `timeline_events` · `work_projects` · `tracks`, `stages`, `board_cards` (pipelines) · `corrections` · `autopilot_catalog` (the shared menu) · … |
 | **functions** | Deterministic writers — `record_interaction`, `ingest_open_loops`, `autoresolve_loops`, `tidy_up`. Connectors — `sync_gmail`, `sync_calendar`, `sync_granola`, `get_email_thread`, `send_draft`, `send_invite`, `find_free_slots`. `connect_source` installs and connects a source from inside the app, so nobody visits an admin console. |
-| **workflows** | One per autopilot; most wake Lem with one precise instruction. |
+| **workflows** | One per autopilot; most wake Otto with one precise instruction. |
 | **schedules** | Only `autopilot_loose_ends`, the trigger the pod shares. Everyone's autopilots are created per person, from the menu. |
-| **files** | `/memory/AGENTS.md` — Lem — and `/setup/skills/`, the five skills, installed on first run. |
+| **files** | `/memory/AGENTS.md` — Otto — and `/setup/skills/`, the five skills, installed on first run. |
 | **apps** | `open-loops-desk` and `open-loops` — two layouts over the same pod, shipped built. Their projects are `desk/` and `app/`. |
 
 ## Known limits
@@ -169,7 +169,7 @@ before.
 - **Instant mail is a switch.** Until you turn *Watch mail* on, new mail is picked up by
   the nightly catch-up.
 - **Slack reads only channels the app was invited to**; direct messages are not wired yet.
-- **Research on new people needs a key.** Without one, Lem falls back to web search.
+- **Research on new people needs a key.** Without one, Otto falls back to web search.
 
 ## Share
 

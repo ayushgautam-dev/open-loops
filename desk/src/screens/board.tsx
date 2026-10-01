@@ -42,11 +42,8 @@ export const boardSql = (where: string) => `
 const WON = /\b(won|joined|hired|signed|customer|live|closed won)\b/i
 const LOST = /\b(lost|not moving|rejected|declined|dropped|passed|churned|closed lost|no longer)\b/i
 
-const money = (v: number) => {
-  if (v >= 1e7) return `₹${(v / 1e7).toFixed(v % 1e7 ? 1 : 0)}Cr`
-  if (v >= 1e5) return `₹${(v / 1e5).toFixed(v % 1e5 ? 1 : 0)}L`
-  return `₹${Math.round(v).toLocaleString('en-IN')}`
-}
+/** No currency is stored with an amount, so none is claimed: a compact number in the reader's own format. */
+const money = (v: number) => new Intl.NumberFormat(undefined, { notation: 'compact', maximumFractionDigits: 1 }).format(v)
 
 function Card({ c, won }: { c: BoardRow; won: boolean }) {
   const open = useOpener()

@@ -133,13 +133,18 @@ const MARKS: Partial<Record<string, () => React.JSX.Element>> = {
   slack: SlackMark,
 }
 
+/* The three sources everybody is asked to connect carry their owners' own artwork, kept
+   as files beside the app (public/marks) rather than redrawn here. */
+const OFFICIAL = new Set(['gmail', 'google_calendar', 'granola'])
+
 /** The icon tile used by both onboarding and the Powers-style rows. */
 export function SourceMark({ app, label }: { app: string; label?: string }) {
   const Mark = MARKS[app]
   return (
     <span className="mark" aria-hidden={label ? undefined : 'true'}
       aria-label={label}>
-      {Mark ? <Mark /> : <span className="mark-fallback">{(label || app).charAt(0).toUpperCase()}</span>}
+      {OFFICIAL.has(app) ? <img src={`${import.meta.env.BASE_URL}marks/${app}.svg`} alt="" width={22} height={22} />
+        : Mark ? <Mark /> : <span className="mark-fallback">{(label || app).charAt(0).toUpperCase()}</span>}
     </span>
   )
 }

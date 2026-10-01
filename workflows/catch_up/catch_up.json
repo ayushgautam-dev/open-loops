@@ -1,10 +1,10 @@
 {
-  "description": "Loose Ends \u2014 reads anything new in the ledger and opens what is genuinely unfinished. Runs when new interactions arrive and again each evening.",
+  "description": "Catch-up \u2014 loads a person's older mail, calendar and meeting notes a few days at a time after first run, and reads each slice. Runs on that person's own timer until their history is in, then does nothing.",
   "edges": [
     {
       "id": "e0",
       "label": null,
-      "source": "guard",
+      "source": "step",
       "target": "gate"
     },
     {
@@ -28,15 +28,15 @@
   ],
   "icon_url": null,
   "mode": "GLOBAL",
-  "name": "autopilot_loose_ends",
+  "name": "catch_up",
   "nodes": [
     {
       "config": {
-        "function_name": "backfill_guard",
+        "function_name": "catch_up_step",
         "input_mapping": {}
       },
-      "id": "guard",
-      "label": "Mid-import?",
+      "id": "step",
+      "label": "Load the next slice",
       "position": null,
       "type": "FUNCTION"
     },
@@ -44,13 +44,13 @@
       "config": {
         "rules": [
           {
-            "condition": "start.payload.id && guard.skip",
+            "condition": "step.skip",
             "next_node_id": "end"
           }
         ]
       },
       "id": "gate",
-      "label": "Stand down during a first-run import",
+      "label": "Anything to read?",
       "position": null,
       "type": "DECISION"
     },
@@ -60,12 +60,12 @@
         "input_mapping": {
           "message": {
             "type": "literal",
-            "value": "Load the open-loops-notice skill and follow it exactly. Read the unread rows in the interaction ledger and turn them into commitments, people, companies, timeline entries and board cards. Only open commitments from the last three weeks. Filter cold outbound aggressively. Never open a commitment you were only copied on. Check what is already open before writing anything so the same obligation never becomes a second row. Write through ingest_open_loops and mark everything you read with mark_extracted, including the noise. Do not send anything. Report totals only. Start reading straight away: do not inspect functions, tables or files first. When pending_interactions returns no rows, stop at once and do nothing else."
+            "value": "Load the open-loops-notice skill and follow it exactly. Read the unread rows in the interaction ledger and turn them into commitments, people, companies, timeline entries and board cards. Only open commitments from the last three weeks. Filter cold outbound aggressively. Never open a commitment you were only copied on. Check what is already open before writing anything so the same obligation never becomes a second row. Write through ingest_open_loops and mark everything you read with mark_extracted, including the noise. Do not send anything. Report totals only. Start reading straight away: do not inspect functions, tables or files first. When pending_interactions returns no rows, stop at once."
           }
         }
       },
       "id": "notice",
-      "label": "Read what is new",
+      "label": "Read what was loaded",
       "position": null,
       "type": "AGENT"
     },

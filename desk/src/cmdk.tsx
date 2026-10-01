@@ -3,6 +3,7 @@ import { Sun, Layers, Users, FileText, Zap, Building2, CornerDownLeft } from 'lu
 import { useSql, rev } from './lib'
 import { Avatar, Logo, Orb } from './ui'
 import { useNav } from './nav'
+import { tm } from './teammate'
 
 /* ⌘K — jump to a person, company, workstream or document, or hand the words to Lem. */
 
@@ -75,7 +76,7 @@ export function CommandPalette({ onAsk }: { onAsk: (text: string) => void }) {
       <div className="scrim" onClick={() => setOpen(false)} />
       <div className="palette" role="dialog" aria-label="Jump to">
         <input
-          autoFocus value={q} placeholder="Jump to anyone or anything — or ask Lem…"
+          autoFocus value={q} placeholder={`Jump to anyone or anything, or ask ${tm()}…`}
           onChange={(e) => { setQ(e.target.value); setI(0) }}
           onKeyDown={(e) => {
             if (e.key === 'ArrowDown') { e.preventDefault(); setI((n) => Math.min(n + 1, q.trim() ? askRow : hits.length - 1)) }
@@ -104,7 +105,7 @@ export function CommandPalette({ onAsk }: { onAsk: (text: string) => void }) {
           {q.trim() && (
             <button className={`pal-row ask${i === askRow ? ' on' : ''}`} onMouseEnter={() => setI(askRow)} onClick={() => { setOpen(false); onAsk(q.trim()) }}>
               <Orb size={16} />
-              <span className="pal-l">Ask Lem “{q.trim()}”</span>
+              <span className="pal-l">Ask {tm()} “{q.trim()}”</span>
             </button>
           )}
         </div>

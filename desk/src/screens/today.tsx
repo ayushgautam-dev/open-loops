@@ -12,6 +12,8 @@ import { useLem } from '../lem'
 import { Correctable } from '../correct'
 import { Board, boardSql, type BoardRow } from './board'
 import { WeatherMark } from '../weather'
+import { useCatching } from '../backfill'
+import { useTeammate, tm } from '../teammate'
 
 /* Today — read once, top to bottom, then get on with the day.
 
@@ -146,7 +148,7 @@ function ReadyShelf() {
             <span className="note-subj">{r.subject || r.obligation}</span>
             {preview(r)
               ? <span className="note-body">{preview(r)}</span>
-              : <span className="note-body empty">A blank draft is started — write it, or let Lem.</span>}
+              : <span className="note-body empty">A blank draft is started. Write it, or let {tm()}.</span>}
             <span className="note-foot">
               <span className="note-for">{r.subject ? r.obligation : ''}</span>
               <span className="note-go">Review <ArrowRight size={12} /></span>
@@ -203,7 +205,7 @@ function Noticed() {
   }
   return (
     <section className="noticed">
-      <div className="sec-h"><Orb size={14} /> Lem noticed</div>
+      <div className="sec-h"><Orb size={14} /> {tm()} noticed</div>
       {q.items.map((s) => (
         <div key={s.id} className="notice">
           <div className="notice-t">
@@ -303,17 +305,46 @@ function BoardToggle({ label, on, set }: { label: string; on: boolean; set: (v: 
   return <button className={`board-toggle${on ? ' on' : ''}`} onClick={() => set(!on)}>{on ? 'Show as list' : label}</button>
 }
 
+/* Boards are never assumed. A tracker earns a button only once it has cards on it, the
+   button carries the tracker's own name, and it shows beside whichever grouping its cards
+   belong to: people or companies. Someone with no pipeline sees no pipeline button. */
+type TrackerRow = { id: string; name: string; n: number; people: number }
+
+function useTrackers(of: 'person' | 'company'): TrackerRow[] {
+  const { version } = useNav()
+  const q = useSql<TrackerRow>(rev(
+    `select t.id, t.name, count(b.id) as n,
+            sum(case when b.person_id is not null then 1 else 0 end) as people
+     from tracks t join board_cards b on b.track_id = t.id
+     where coalesce(t.archived, false) = false
+     group by t.id, t.name, t.position order by t.position nulls last, t.name`, version))
+  return q.items.filter((t) => (Number(t.people) * 2 >= Number(t.n)) === (of === 'person'))
+}
+
+function TrackerToggles({ trackers, on, set }: { trackers: TrackerRow[]; on: string | null; set: (id: string | null) => void }) {
+  if (!trackers.length) return null
+  return (
+    <>
+      {on
+        ? <BoardToggle label="" on set={() => set(null)} />
+        : trackers.map((t) => <BoardToggle key={t.id} label={`${t.name} board`} on={false} set={() => set(t.id)} />)}
+    </>
+  )
+}
+
+function TrackerBoard({ id }: { id: string }) {
+  const { version } = useNav()
+  const cards = useSql<BoardRow>(rev(boardSql(`b.track_id = ${lit(id)}`), version))
+  if (cards.isLoading) return <Loading rows={3} />
+  return <Board rows={cards.items} stagesWhere={`track_id = ${lit(id)}`} />
+}
+
 function ByPerson({ rows, myDomain, onChange, toCompanies }: {
   rows: OpenRow[]; myDomain: string; onChange: () => void; toCompanies: () => void
 }) {
-  const { version } = useNav()
-  const [boards, setBoards] = useState(false)
-  const hiring = useSql<BoardRow>(rev(boards
-    ? boardSql(`b.track_id in (select id from tracks where lower(name)='hiring')`) : null, version))
-  const rounds = useSql<{ id: string; round: string }>(rev(boards
-    ? `select t.id, coalesce((select w.title from work_projects w where w.track_id=t.id
-                    and (w.archived is null or w.archived=false) order by w.last_met_at desc nulls last limit 1), t.name) as round
-       from tracks t where lower(t.name)='hiring'` : null, version))
+  const trackers = useTrackers('person')
+  const [board, setBoard] = useState<string | null>(null)
+  const showing = trackers.find((t) => t.id === board)
   const sections: { key: 'team' | 'candidates' | 'individuals'; label: string }[] = [
     { key: 'team', label: 'Your team' }, { key: 'candidates', label: 'Candidates' }, { key: 'individuals', label: 'Individuals' },
   ]
@@ -321,30 +352,28 @@ function ByPerson({ rows, myDomain, onChange, toCompanies }: {
   const any = sections.some((sec) => rows.some((l) => bucketOf(l, myDomain) === sec.key))
   return (
     <div className="stories">
-      {sections.map((sec) => {
-        const own = rows.filter((l) => bucketOf(l, myDomain) === sec.key)
-        if (!own.length && !(sec.key === 'candidates' && boards)) return null
-        return (
-          <section key={sec.key} className="group-sec">
-            <div className="sec-h">{sec.label}
-              {sec.key === 'candidates' && <><span className="grow" /><BoardToggle label="Show as board" on={boards} set={setBoards} /></>}
-            </div>
-            {sec.key === 'candidates' && boards
-              ? (rounds.items.length ? rounds.items.map((r) => (
-                  <div key={r.id} className="round">
-                    <div className="round-h">{r.round}</div>
-                    <Board rows={hiring.items.filter((c) => c.track_id === r.id)} stagesWhere={`track_id = ${lit(r.id)}`} />
-                  </div>
-                )) : <Loading rows={2} />)
-              : <div className="cardgrid">{groupBy(own, (l) => l.person_id).map((g) => <PersonCard key={g[0].person_id} loops={g} onChange={onChange} />)}</div>}
-          </section>
-        )
-      })}
-      {!any && !boards && <Empty line="Nothing open with anyone outside a company." />}
-      {atCompanies.length > 0 && (
-        <button className="group-more" onClick={toCompanies}>
-          {atCompanies.length} more with people at companies <ChevronRight size={13} />
-        </button>
+      {trackers.length > 0 && (
+        <div className="sec-h">{showing ? showing.name : ''}<span className="grow" /><TrackerToggles trackers={trackers} on={showing?.id ?? null} set={setBoard} /></div>
+      )}
+      {showing ? <TrackerBoard id={showing.id} /> : (
+        <>
+          {sections.map((sec) => {
+            const own = rows.filter((l) => bucketOf(l, myDomain) === sec.key)
+            if (!own.length) return null
+            return (
+              <section key={sec.key} className="group-sec">
+                <div className="sec-h">{sec.label}</div>
+                <div className="cardgrid">{groupBy(own, (l) => l.person_id).map((g) => <PersonCard key={g[0].person_id} loops={g} onChange={onChange} />)}</div>
+              </section>
+            )
+          })}
+          {!any && <Empty line="Nothing open with anyone outside a company." />}
+          {atCompanies.length > 0 && (
+            <button className="group-more" onClick={toCompanies}>
+              {atCompanies.length} more with people at companies <ChevronRight size={13} />
+            </button>
+          )}
+        </>
       )}
     </div>
   )
@@ -353,21 +382,20 @@ function ByPerson({ rows, myDomain, onChange, toCompanies }: {
 function ByCompany({ rows, myDomain, onChange, toPeople }: {
   rows: OpenRow[]; myDomain: string; onChange: () => void; toPeople: () => void
 }) {
-  const { version } = useNav()
-  const [pipeline, setPipeline] = useState(false)
-  const sales = useSql<BoardRow>(rev(pipeline
-    ? boardSql(`b.track_id in (select id from tracks where lower(name)='sales')`) : null, version))
+  const trackers = useTrackers('company')
+  const [board, setBoard] = useState<string | null>(null)
+  const showing = trackers.find((t) => t.id === board)
   const own = rows.filter((l) => bucketOf(l, myDomain) === 'company')
   const elsewhere = rows.length - own.length
   return (
     <div className="stories">
-      <div className="sec-h">Companies<span className="grow" /><BoardToggle label="Show sales pipeline" on={pipeline} set={setPipeline} /></div>
-      {pipeline
-        ? (sales.isLoading ? <Loading rows={3} /> : sales.items.length ? <Board rows={sales.items} stagesWhere={`track_id in (select id from tracks where lower(name)='sales')`} /> : <Empty line="No sales pipeline yet." />)
+      <div className="sec-h">{showing ? showing.name : 'Companies'}<span className="grow" /><TrackerToggles trackers={trackers} on={showing?.id ?? null} set={setBoard} /></div>
+      {showing
+        ? <TrackerBoard id={showing.id} />
         : own.length
           ? <div className="cardgrid">{groupBy(own, (l) => l.company_id).map((g) => <CompanyCard key={g[0].company_id} loops={g} onChange={onChange} />)}</div>
           : <Empty line="Nothing open with any company." />}
-      {!pipeline && elsewhere > 0 && (
+      {!showing && elsewhere > 0 && (
         <button className="group-more" onClick={toPeople}>
           {elsewhere} more with your team, candidates and individuals <ChevronRight size={13} />
         </button>
@@ -378,6 +406,8 @@ function ByCompany({ rows, myDomain, onChange, toPeople }: {
 
 export function Today({ userName }: { userName: string }) {
   const { version, bump } = useNav()
+  const catching = useCatching()
+  const teammate = useTeammate()
   const { user } = useCurrentUser({ client })
   const myDomain = (((user as { email?: string } | undefined)?.email ?? '').split('@')[1] ?? '').toLowerCase()
   const [filter, setFilter] = useState<Filter>('all')
@@ -459,8 +489,8 @@ export function Today({ userName }: { userName: string }) {
       {loading ? <Loading rows={4} />
         : all.length === 0 ? (
           <div className="clear">
-            <div className="display sm">Nothing needs you.</div>
-            <p className="lede">Lem will put things here as they come in.</p>
+            <div className="display sm">{catching ? `${teammate} is reading your mail.` : 'Nothing needs you.'}</div>
+            <p className="lede">{catching ? 'Loose ends appear here as they are found.' : `${teammate} will put things here as they come in.`}</p>
           </div>
         ) : (
           <>
@@ -481,7 +511,7 @@ export function Today({ userName }: { userName: string }) {
               </div>
             )}
             <Noticed />
-            <div className="keys-hint"><kbd>J</kbd><kbd>K</kbd> move · <kbd>↵</kbd> open · <kbd>E</kbd> done · <kbd>S</kbd> snooze · <kbd>/</kbd> ask Lem</div>
+            <div className="keys-hint"><kbd>J</kbd><kbd>K</kbd> move · <kbd>↵</kbd> open · <kbd>E</kbd> done · <kbd>S</kbd> snooze · <kbd>/</kbd> ask {tm()}</div>
           </>
         )}
     </div>

@@ -19,19 +19,12 @@ export function CloneGate({ name }: { name?: string }) {
   return (
     <div className="gate">
       <div className="gate-card">
-        <div className="fr-badge">Open Loops</div>
-        <h1>This one belongs to somebody else.</h1>
-        <p className="fr-line">
-          {name ? `${name} is signed in, but this workspace is not shared. ` : ''}
-          Open Loops reads one person's mail and holds one person's commitments, so
-          each one stays private to its owner. Take your own copy instead — it arrives
-          empty, connects to your accounts, and reads your last three weeks.
-        </p>
-
+        <h1>This one is taken.</h1>
+        <p className="fr-sub">{name ? `${name}, get` : 'Get'} your own Otto.</p>
         <div className="gate-steps">
-          <div className="gate-step"><b>1</b><span>Install your own copy on Lemma — one click.</span></div>
-          <div className="gate-step"><b>2</b><span>Open it and connect Gmail. Calendar and Granola are optional.</span></div>
-          <div className="gate-step"><b>3</b><span>It reads your last three weeks and shows you what is waiting on you.</span></div>
+          <div className="gate-step"><b>1</b><span>Install your copy</span></div>
+          <div className="gate-step"><b>2</b><span>Connect your mail</span></div>
+          <div className="gate-step"><b>3</b><span>See what is waiting on you</span></div>
         </div>
 
         <div className="btn-row" style={{ marginTop: 22 }}>

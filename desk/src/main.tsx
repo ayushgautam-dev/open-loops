@@ -20,6 +20,8 @@ import { FirstRun, needsFirstRun } from './screens/firstrun'
 import { CloneGate } from './gate'
 import { Profile } from './profile'
 import { ensureMyAutopilots, ensureSkills } from './autopilot-sync'
+import { useCatchUp, CatchUpCtx, type CatchUp } from './backfill'
+import { useTeammate, tm, DEFAULT_TEAMMATE } from './teammate'
 import './styles.css'
 
 const queryClient = new QueryClient()
@@ -50,7 +52,7 @@ function ThemeToggle() {
   )
 }
 
-function Rail({ email, name }: { email: string; name: string }) {
+function Rail({ email, name, catching }: { email: string; name: string; catching: CatchUp | null }) {
   const { route, navigate, version } = useNav()
   const [me, setMe] = useState(false)
   const counts = useSql<{ mine: number; ready: number }>(rev(
@@ -67,7 +69,7 @@ function Rail({ email, name }: { email: string; name: string }) {
   )
   return (
     <nav className="rail" aria-label="Main">
-      <button className="rail-mark" onClick={() => navigate('/')} title="Open Loops"><Mark /></button>
+      <button className="rail-mark" onClick={() => navigate('/')} title={tm()}><Mark /></button>
       <div className="rail-nav">
         <Item to="/" label="Today" icon={Sun} n={c ? Number(c.mine) || null : null} />
         <Item to="/workstreams" label="Work" icon={Layers} />
@@ -76,6 +78,13 @@ function Rail({ email, name }: { email: string; name: string }) {
         <Item to="/autopilots" label="Auto" icon={Zap} />
       </div>
       <div className="rail-foot">
+        {catching && (
+          <div className="rail-catch" role="status"
+            title={`Still reading your older mail, back to ${new Date(Date.now() - catching.covered * 86400000).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })}. You can carry on.`}>
+            <span className="spinner sm" />
+            <span>{catching.grouped ? 'Reading older mail' : 'Reading your mail'}</span>
+          </div>
+        )}
         <button className="rail-btn" title="Jump to (⌘K)"
           onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}>
           <Search size={17} />
@@ -89,7 +98,9 @@ function Rail({ email, name }: { email: string; name: string }) {
 }
 
 function Shell({ name, email }: { name: string; email: string }) {
-  const { route } = useNav()
+  const { route, bump } = useNav()
+  // the older history keeps loading behind whatever page is open
+  const catching = useCatchUp(bump)
   const lem = useLem()
   useRowKeys()
   let screen: React.ReactNode
@@ -107,9 +118,9 @@ function Shell({ name, email }: { name: string; email: string }) {
 
   return (
     <div className="shell">
-      <Rail email={email} name={name} />
+      <Rail email={email} name={name} catching={catching} />
       <main className="main">
-        <div className="main-scroll">{screen}</div>
+        <div className="main-scroll"><CatchUpCtx.Provider value={catching}>{screen}</CatchUpCtx.Provider></div>
         <LemDock />
       </main>
       <FocusPanel />
@@ -120,6 +131,8 @@ function Shell({ name, email }: { name: string; email: string }) {
 
 function App() {
   const { user } = useCurrentUser({ client: lemmaClient })
+  const teammate = useTeammate()
+  useEffect(() => { document.title = teammate }, [teammate])
   const [fresh, setFresh] = useState<boolean | null>(null)
   useEffect(() => {
     let live = true
@@ -133,7 +146,9 @@ function App() {
   }, [])
   const u = user as { email?: string; name?: string } | undefined
   const email = u?.email ?? ''
-  const name = firstName(u?.name || u?.email?.split('@')[0] || 'there').replace(/^\w/, (m) => m.toUpperCase())
+  // a mailbox handle is not a name: "sam02" greets as "Sam", "j.doe" as "J"
+  const handle = (u?.email?.split('@')[0] ?? '').split(/[._\-+\d]/).find(Boolean)
+  const name = firstName(u?.name?.trim() && !/\d/.test(u.name) ? u.name : handle || u?.name || 'there').replace(/^\w/, (m) => m.toUpperCase())
   return (
     <NavProvider>
       <ToastProvider>
@@ -152,7 +167,7 @@ createRoot(document.getElementById('root')!).render(
     <QueryClientProvider client={queryClient}>
       <AuthGuard
         client={lemmaClient}
-        appName="Open Loops"
+        appName={DEFAULT_TEAMMATE}
         loadingFallback={<div className="boot"><span className="orb live" style={{ width: 28, height: 28 }}><i /></span></div>}
         /* A visitor will never be let into somebody else's mail — offer their own copy instead. */
         accessRequestFallback={({ user }) => <CloneGate name={user?.name || user?.email || undefined} />}

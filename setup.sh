@@ -14,7 +14,7 @@ export LEMMA_POD_ID
 
 # 1. Everything, in one quiet import.
 #
-#    --with-files is not optional: Lem's whole judgement is /memory/AGENTS.md, and the
+#    --with-files is not optional: Otto's whole judgement is /memory/AGENTS.md, and the
 #    five skills ship as /setup/skills/. Without them every table, function and
 #    workflow arrives intact and the assistant has no idea what it is for.
 #
@@ -22,7 +22,7 @@ export LEMMA_POD_ID
 #    everybody switches on for themselves. It holds no personal data. Every other
 #    table arrives empty and fills with each person's own rows, private to them.
 #
-#    --set-pod-meta names the pod `open-loops`. It applies before any resource, so if
+#    --set-pod-meta names the pod `Otto` (on Lemma the pod is the teammate, and its name is what the app calls it). It applies before any resource, so if
 #    the organization already has a pod by that name it 409s in seconds with nothing
 #    created — and the fallback is simply the same import without the rename.
 #
@@ -35,7 +35,7 @@ LOG="$(mktemp)"
 echo "setting up — about three minutes"
 if ! lemma pods import . --set-pod-meta --with-files --with-data "${VARS[@]}" >"$LOG" 2>&1; then
   if grep -q 'POD_CONFLICT' "$LOG"; then
-    echo "note: could not name this pod 'open-loops' — something else in this" >&2
+    echo "note: could not name this pod 'Otto' — something else in this" >&2
     echo "      organization already is. Importing without the rename." >&2
     if ! lemma pods import . --with-files --with-data "${VARS[@]}" >"$LOG" 2>&1; then
       echo "the import failed. Full output:" >&2; cat "$LOG" >&2; exit 1
@@ -68,7 +68,7 @@ print(len((json.loads(t).get("permissions") or {}).get("grants") or []))' "$dir/
   done
 done
 
-# 3. Lem's skills. /skills is a read-only system folder to the importer — a bundle
+# 3. Otto's skills. /skills is a read-only system folder to the importer — a bundle
 #    that writes there fails outright — but writing a file into it is fine. (The app's
 #    first run does the same from /setup/skills, which is what makes the one-click
 #    import work without this script.)
@@ -120,7 +120,7 @@ cat <<TXT
  are very likely on a phone, and they did not ask for a terminal.
  (autopilot menu: $MENU entries — 0 means the import went in without
   --with-data and nobody gets autopilots · $BRAIN file(s) under /memory — 0 means
-  without --with-files and Lem knows nothing · skills installed: $SKILLS of 5 ·
+  without --with-files and Otto knows nothing · skills installed: $SKILLS of 5 ·
   log: $LOG)
 
  When they answer, YOU do the thing — never hand them a command:
@@ -134,7 +134,7 @@ cat <<TXT
    a schedule woke you      -> nobody is watching. Decide, and say what you assumed.
 ────────────────────────────────────────────────────────────────────────────
 
-  Open Loops is set up. It has read nothing yet — that starts when you open it.
+  Otto is set up. It has read nothing yet — that starts when you open it.
 
   It reads your mail, calendar and meeting notes and works out what is still
   open: who is waiting on you, what you promised and by when, and what other
@@ -143,7 +143,7 @@ cat <<TXT
   gives you one short brief instead of an inbox.
 
   To start, open it and connect Gmail — Calendar and Granola help, but are
-  optional. It reads your last three weeks, which takes a few minutes:
+  optional. The desk opens in about a minute; three weeks of history fill in behind it:
   $DESK_URL
   (the same pod, in a simpler layout: $APP_URL)
 

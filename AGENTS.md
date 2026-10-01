@@ -1,7 +1,7 @@
 # Working in this repository
 
 For anyone — person or agent — changing this pod. How it behaves is in
-[README.md](README.md); what Lem is told is in
+[README.md](README.md); what Otto is told is in
 [files/memory/AGENTS.md](files/memory/AGENTS.md) and the skills beside it.
 
 ## Setting a fresh pod up
@@ -50,10 +50,10 @@ Lemma sign-in, and an agent has no session to get past it.
   never overwrites a skill somebody has edited.
 - **Send is the only way anything leaves.** `send_draft` and `send_invite` are called
   only from a person's click, held for a few seconds so it can be undone. No autopilot,
-  and no Lem conversation, sends.
+  and no Otto conversation, sends.
 - **Nothing is saved without its source conversation and when it opened.** Items saved
   without them could never close automatically. `ingest_open_loops` enforces it.
-- **Enum drift is the recurring bug class.** Lem writes human words the schema rejects,
+- **Enum drift is the recurring bug class.** Otto writes human words the schema rejects,
   and one bad value used to fail a whole batch. Every enum column has a normaliser in
   the writer function; add one whenever you add an enum.
 - **Real names never go in code, prompts or comments.** This repository is public; use
